@@ -42,7 +42,7 @@ export default function App() {
     const settingString: string | null = localStorage.getItem('gfLocalSettings');
     if (settingString !== '') {
       const parsedSettingString = JSON.parse(String(settingString));
-      if (parsedSettingString.hasOwnProperty('font')) setFont(parsedSettingString.font);
+      if (parsedSettingString!==undefined && parsedSettingString.hasOwnProperty('font')) setFont(parsedSettingString.font);
     }
     if (user?.token!==undefined) {
       const prom = Api.loginUPD(user);
