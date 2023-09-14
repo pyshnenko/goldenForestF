@@ -1,0 +1,37 @@
+@font-face {
+  font-family: 'Gotish';
+  src: url('https://gf.spamigor.ru/font.otf') format('truetype');
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Izbushka';
+  src: url('https://gf.spamigor.ru/TDIzbushka.otf') format('truetype');
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'BalkaraFreeCondensed';
+  src: url('https://gf.spamigor.ru/BalkaraFreeCondensed.ttf') format('truetype');
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TriodPostnaja';
+  src: url('https://gf.spamigor.ru/TriodPostnaja.ttf') format('truetype');
+  font-style: normal;
+  font-display: swap;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Gotish;
+}
+
+/*h1, h2, h3, h4, h5, h6 {
+  font-family: Gotish;
+}*/
