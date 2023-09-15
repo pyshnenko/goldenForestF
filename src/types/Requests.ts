@@ -62,3 +62,9 @@ export interface Checked {
 export interface CheckResult {
     res: string
 }
+
+export interface newGoldData {
+    login: string,
+    value: number,
+    date: number
+}

@@ -1,5 +1,5 @@
 import { loginApi, privateApi } from "./HttpService";
-import { LoginResData, LoginReqData, RegisterReqData, User, Checked } from 'types/Requests'
+import { LoginResData, LoginReqData, RegisterReqData, User, Checked, newGoldData } from 'types/Requests'
 import { NullableUser } from "types/User";
 
 const login = (data: LoginReqData) => {
@@ -38,6 +38,14 @@ const checkTotalMoney = (user: NullableUser) => {
     return privateApi(user?.token || null).post('/gold/total');
 };
 
+const goldTable = (user: NullableUser) => {
+    return privateApi(user?.token || null).post('/gold/goldTable');
+};
+
+const newGoldValue = (user: NullableUser, bodyData: newGoldData ) => {
+    return privateApi(user?.token || null).post('/gold/newValue', {...bodyData});
+};
+
 const Api = {
     login,
     register,
@@ -47,7 +55,9 @@ const Api = {
     loginUPD,
     checkData,
     deleteUser,
-    checkTotalMoney
+    checkTotalMoney,
+    goldTable,
+    newGoldValue
 }
 
 export default Api

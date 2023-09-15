@@ -25,3 +25,5 @@ export const banTo = (val: string) => {
     }
     else return null
 }
+
+export interface moneyTotalValue {load: boolean, value: {login: string, total: number}[]}
