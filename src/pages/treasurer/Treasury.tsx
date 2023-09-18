@@ -182,12 +182,12 @@ export default function Treasury (args: any) {
                                                 <TableHead>
                                                     <TableRow>
                                                         {headCells.map((headCell, index) => (
-                                                        ((index<2)||(width>800))&&<TableCell
+                                                        ((index<3)||(width>800))&&<TableCell
                                                             key={headCell.id}
                                                             align={headCell.numeric ? 'right' : 'left'}
                                                             padding={headCell.disablePadding ? 'none' : 'normal'}
                                                         >
-                                                            {headCell.label}
+                                                            {index===2?'':headCell.label}
                                                         </TableCell>
                                                         ))}
                                                     </TableRow>
