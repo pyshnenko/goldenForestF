@@ -326,25 +326,25 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                 }
             }) 
             console.log(buf)
-            setUsers(buf);
-            setReady(true);
             let res = Api.goldTable(user);
             res.then((result)=>{
                 console.log(result.data.res.data);
                 let realData: any[] = result.data.res.data;
-                let buf = copy(users);
                 buf.map((item: any)=>{
                     item.gold = 0;
                     realData.map((inpItem: any)=>{
                         if (item.login === inpItem.login) item.gold = inpItem.value
                     })
                 })
-                setUsers(buf);
                 setGoldLoad({load: true, value: realData});
             });
             res.catch((e)=>{
-                console.log(e)
-            })
+                console.log(e);
+            });
+            res.finally(()=>{
+                setUsers(buf);
+                setReady(true);
+            });
         }
     }, [])
 
@@ -406,7 +406,6 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                 let res = Api.updUser(user, saveUser.current);
                 res.then((result: any)=>{
                     setOpenSnBar({sever:true, open: true, text: 'Сохранено'});
-                    //setVisible(false);
                     users.map((item: any, index: number) => {
                         if (item.login === saveUser.current.login) {
                             let buf = copy(users);
@@ -415,6 +414,7 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                         }
                     })
                     saveUser.current = null;
+                    setVisible(false);
                 });
             }
         }
@@ -430,7 +430,7 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                 if (item.role !== event.target.value) {
                     if (event.target.value === Roles.Outcast) {
                         setOpenDialog(true);
-                        //setVisible(false);
+                        setVisible(false);
                         saveUser.current = us;
                     }
                     else {
@@ -441,7 +441,11 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                         let res = Api.updUser(user, buf[index]);
                         res.then((result: any)=>{
                             setOpenSnBar({sever:true, open: true, text: 'Сохранено'});
-                            //setVisible(false);
+                            setVisible(false);
+                        });
+                        res.catch((e: any)=>{
+                            setOpenSnBar({sever:false, open: true, text: 'Ошибка'});
+                            setVisible(false);
                         });
                     }
                 }
@@ -564,25 +568,27 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                                                             {index===checgeMoneyValue.index&&<IconButton onClick={()=>{
                                                                 const prom = Api.newGoldValue(user, {login: String(row.login), value: checgeMoneyValue.value, date: Number(new Date())});
                                                                 setChecgeMoneyValue({index: -1, value: 0});
-                                                                setVisible(true);
-                                                                prom.then((res: any)=>{
-                                                                    let buf = copy(users);
-                                                                    for (let i=0; i<buf.length; i++) {
-                                                                        if (buf[i].login===row.login) {
-                                                                            buf[i].gold = Number(row.gold) + checgeMoneyValue.value;
-                                                                            setUsers(buf);
-                                                                            break;
+                                                                if (checgeMoneyValue.value!==0) {
+                                                                    setVisible(true);
+                                                                    prom.then((res: any)=>{
+                                                                        let buf = copy(users);
+                                                                        for (let i=0; i<buf.length; i++) {
+                                                                            if (buf[i].login===row.login) {
+                                                                                buf[i].gold = Number(row.gold) + checgeMoneyValue.value;
+                                                                                setUsers(buf);
+                                                                                break;
+                                                                            }
                                                                         }
-                                                                    }
-                                                                    setVisible(false);
-                                                                    setOpenSnBar({sever:true, open: true, text: 'Сохранено'});
-                                                                    setChecgeMoneyValue({index: -1, value: 0});
-                                                                })
-                                                                .catch((err)=>{
-                                                                    console.log(err);
-                                                                    setVisible(false);
-                                                                    setOpenSnBar({sever:false, open: true, text: 'Ошибка'});
-                                                                })
+                                                                        setVisible(false);
+                                                                        setOpenSnBar({sever:true, open: true, text: 'Сохранено'});
+                                                                        setChecgeMoneyValue({index: -1, value: 0});
+                                                                    })
+                                                                    .catch((err)=>{
+                                                                        console.log(err);
+                                                                        setVisible(false);
+                                                                        setOpenSnBar({sever:false, open: true, text: 'Ошибка'});
+                                                                    })
+                                                                }
                                                             }}>
                                                                 <CheckIcon />
                                                             </IconButton>}

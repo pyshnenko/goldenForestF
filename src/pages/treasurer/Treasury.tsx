@@ -138,10 +138,15 @@ export default function Treasury (args: any) {
     }, [total])
 
     return (
-        <Box>            
-            {!ready.gold&&<Skeleton variant="rounded" sx={{width: '80%', maxWidth: '800px', height: '60px'}} />}
+        <Box sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+        }}>            
+            {!ready.gold&&<Skeleton variant="rounded" sx={{width: width<950?'90%':'80%', maxWidth: '800px', height: '60px'}} />}
             <Fade in={ready.gold}>
                 <Box sx={{    
+                    width: '100%',
                     display: 'flex',
                     flexDirection: 'column',
                     alignContent: 'center',
@@ -249,7 +254,8 @@ export default function Treasury (args: any) {
                         </AccordionDetails>
                     </Accordion>
                 </Box>
-            </Fade>
+            </Fade>            
+            {!ready.total&&<Skeleton variant="rounded" sx={{width: width<950?'90%':'80%', maxWidth: '800px', height: '60px'}} />}
         </Box>
         
     );

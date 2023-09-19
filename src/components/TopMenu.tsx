@@ -104,7 +104,7 @@ export default function TopMenu() {
             elevation={0}
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
-            <Toolbar sx={{ flexWrap: "wrap", justifyContent: 'space-between' }}>
+            <Toolbar sx={{ flexWrap: "nowrap", justifyContent: 'space-between' }}>
                 {width>500 ? <React.Fragment>
                     <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
                         <LinkUi href="/">Золотые леса</LinkUi>
@@ -116,29 +116,31 @@ export default function TopMenu() {
                     {user?.role === Roles.Citizen ? <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
                         Ваша заявка рассматривается
                     </Typography>: null}
+                    <Box>
+                        {!user?.email ? (
+                            <React.Fragment>
+                                <Button variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+                                    <LinkUi href="/login">Вход</LinkUi>
+                                </Button>
 
-                    {!user?.email ? (
-                        <React.Fragment>
-                            <Button variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-                                <LinkUi href="/login">Вход</LinkUi>
-                            </Button>
+                                <Button variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+                                    <LinkUi href="/register">Регистрация</LinkUi>
+                                </Button>
+                            </React.Fragment>
+                        ) : null}
 
-                            <Button variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-                                <LinkUi href="/register">Регистрация</LinkUi>
-                            </Button>
-                        </React.Fragment>
-                    ) : null}
+                        {!!user && (
+                            <>
+                                {Object.values(PagesConfig).map(({ url, role, name }: any, i) => {
+                                    return role && (( role.includes(user.role))||((user.role === Roles.Lord)&&(url !== Paths.Join))) ?
+                                        <Button key={i} variant="outlined" sx={{ my: 1, mx: 1.5 }}>
+                                            <LinkUi href={url}>{name}</LinkUi>
+                                        </Button> : null
+                                })}
+                            </>
+                        )}
 
-                    {!!user && (
-                        <>
-                            {Object.values(PagesConfig).map(({ url, role, name }: any, i) => {
-                                return role && (( role.includes(user.role))||((user.role === Roles.Lord)&&(url !== Paths.Join))) ?
-                                    <Button key={i} variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-                                        <LinkUi href={url}>{name}</LinkUi>
-                                    </Button> : null
-                            })}
-                        </>
-                    )}
+                    </Box>
                 </React.Fragment> :
                 <React.Fragment>
                     <IconButton
