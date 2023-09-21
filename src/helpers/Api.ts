@@ -46,6 +46,14 @@ const newGoldValue = (user: NullableUser, bodyData: newGoldData ) => {
     return privateApi(user?.token || null).post('/gold/newValue', {...bodyData});
 };
 
+const addToTreasury = (user: NullableUser, bodyData: newGoldData ) => {
+    return privateApi(user?.token || null).post('/goldTreasury/addToTreasury', {...bodyData});
+};
+
+const checkTotalMoneyTreasure = (user: NullableUser, addr: string='total') => {
+    return privateApi(user?.token || null).post('/goldTreasury/total', addr);
+};
+
 const Api = {
     login,
     register,
@@ -57,7 +65,9 @@ const Api = {
     deleteUser,
     checkTotalMoney,
     goldTable,
-    newGoldValue
+    newGoldValue,
+    addToTreasury,
+    checkTotalMoneyTreasure
 }
 
 export default Api

@@ -66,5 +66,6 @@ export interface CheckResult {
 export interface newGoldData {
     login: string,
     value: number,
-    date: number
+    date: number,
+    way?: string
 }

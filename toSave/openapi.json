@@ -3,7 +3,7 @@
   "info": {
     "title": "API для золотых лесов",
     "description": "api для сайтика",
-    "termsOfService": "http://gf.spamigor.site",
+    "termsOfService": "http://gf.spamigor.ru",
     "contact": {
       "email": "pyshnenko94@yandex.ru"
     },
@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://gf.spamigor.site/api"
+      "url": "https://gf.spamigor.ru/api"
     }
   ],
   "tags": [
@@ -20,19 +20,247 @@
       "description": "все что можно сделать с пользователем",
       "externalDocs": {
         "description": "Развернуть",
-        "url": "http://gf.spamigor.site/api/"
+        "url": "http://gf.spamigor.ru/api/"
       }
     },
     {
       "name": "поступление золота",
+      "description": "Обрработка запросов по кошелькам",
+      "externalDocs": {
+        "description": "Развернуть",
+        "url": "http://spamigor.ru/api/gold/"
+      }
+    },
+    {
+      "name": "Операции с казной",
       "description": "Обрработка запросов по казне",
       "externalDocs": {
         "description": "Развернуть",
-        "url": "http://spamigor.site/api/gold/newValue"
+        "url": "http://spamigor.ru/api/goldTreasury/"
       }
     }
   ],
   "paths": {
+    "/goldTreasury/addToTreasury": {
+      "post": {
+        "tags": [
+          "Из кошелька куда-то"
+        ],
+        "summary": "Обновление частных данных в казне",
+        "operationId": "goldTreasury_addToTreasury",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "type": "string",
+                    "example": "pyshnenko94@yandex.ru"
+                  },
+                  "value": {
+                    "type": "number",
+                    "example": 100
+                  },
+                  "date": {
+                    "type": "number",
+                    "example": 1686294178574
+                  },
+                  "addr": {
+                    "type": "string",
+                    "example": "total"
+                  },
+                  "way": {
+                    "type": "string",
+                    "example": "В казну"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Выполнено"
+          },
+          "401": {
+            "description": "Недостаточно прав"
+          },
+          "402": {
+            "description": "Не авторизован"
+          },
+          "403": {
+            "description": "Некорректный токен или данные"
+          }
+        },
+        "security": [
+          {
+            "B_auth": []
+          }
+        ]
+      }
+    },
+    "/goldTreasury/updValue": {
+      "post": {
+        "tags": [
+          "Операции с казной"
+        ],
+        "summary": "Обновление частных данных в казне",
+        "operationId": "goldTreasury_updValue",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "type": "string",
+                    "example": "pyshnenko94@yandex.ru"
+                  },
+                  "value": {
+                    "type": "number",
+                    "example": 100
+                  },
+                  "date": {
+                    "type": "number",
+                    "example": 1686294178574
+                  },
+                  "addr": {
+                    "type": "string",
+                    "example": "total"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Выполнено"
+          },
+          "401": {
+            "description": "Недостаточно прав"
+          },
+          "402": {
+            "description": "Не авторизован"
+          },
+          "403": {
+            "description": "Некорректный токен или данные"
+          }
+        },
+        "security": [
+          {
+            "B_auth": []
+          }
+        ]
+      }
+    },
+    "/goldTreasury/newValue": {
+      "post": {
+        "tags": [
+          "Операции с казной"
+        ],
+        "summary": "Обрработка запросов по операциям с казной",
+        "operationId": "goldTreasury_newValue",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "type": "string",
+                    "example": "pyshnenko94@yandex.ru"
+                  },
+                  "value": {
+                    "type": "number",
+                    "example": 100
+                  },
+                  "date": {
+                    "type": "number",
+                    "example": 1686294178574
+                  },
+                  "addr": {
+                    "type": "string",
+                    "example": "total"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Выполнено"
+          },
+          "401": {
+            "description": "Недостаточно прав"
+          },
+          "402": {
+            "description": "Не авторизован"
+          },
+          "403": {
+            "description": "Некорректный токен или данные"
+          }
+        },
+        "security": [
+          {
+            "B_auth": []
+          }
+        ]
+      }
+    },
+    "/goldTreasury/total": {
+      "post": {
+        "tags": [
+          "Операции с казной"
+        ],
+        "summary": "Запрос сведений по движению средств. Оставить поле пустым для запроса общего балланса",
+        "operationId": "goldTreasury_total",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "type": "string",
+                    "example": "pyshnenko94@yandex.ru"
+                  },
+                  "addr": {
+                    "type": "string",
+                    "example": "total"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Выполнено"
+          },
+          "401": {
+            "description": "Недостаточно прав"
+          },
+          "402": {
+            "description": "Не авторизован"
+          },
+          "403": {
+            "description": "Некорректный токен или данные"
+          }
+        },
+        "security": [
+          {
+            "B_auth": []
+          }
+        ]
+      }
+    },
     "/gold/updStatus": {
       "post": {
         "tags": [
@@ -162,6 +390,10 @@
                   "date": {
                     "type": "number",
                     "example": 1686294178574
+                  },
+                  "way": {
+                    "type": "string",
+                    "example": "В казну"
                   }
                 }
               }
@@ -212,6 +444,34 @@
             }
           }
         },
+        "responses": {
+          "200": {
+            "description": "Выполнено"
+          },
+          "401": {
+            "description": "Недостаточно прав"
+          },
+          "402": {
+            "description": "Не авторизован"
+          },
+          "403": {
+            "description": "Некорректный токен или данные"
+          }
+        },
+        "security": [
+          {
+            "B_auth": []
+          }
+        ]
+      }
+    },
+    "/gold/goldTable": {
+      "post": {
+        "tags": [
+          "поступление золота"
+        ],
+        "summary": "Таблица средств пользователей",
+        "operationId": "goldTable",
         "responses": {
           "200": {
             "description": "Выполнено"
