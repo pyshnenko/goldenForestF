@@ -4,3 +4,4 @@ joined
 register
 members
 ban
+events

@@ -16,13 +16,10 @@ import Paper from '@mui/material/Paper';
 import Checkbox from '@mui/material/Checkbox';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { visuallyHidden } from '@mui/utils';
 import { User } from 'types/Requests'
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import {Roles} from 'types/Enums';
@@ -35,6 +32,7 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useLoading } from 'hooks/useLoading';
 import UsersCard from 'components/UsersCard';
+import FlyingString from 'components/FlyingString';
 import { DialogW, resultDialogType } from 'components/Dialog';
 import {FullData} from 'types/Requests';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -209,7 +207,7 @@ function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
     const { numSelected, selected, setSelected, users, setUsers, setOpenSnBar } = props;
     const [ openDialog, setOpenDialog ] = useState<boolean>(false);
     const [ dialogResult, setDialogResult ] = useState<resultDialogType>({ready: false, valStr: '', valBool: false, marker: 'delUser'});
-    console.log(selected)
+    
     const { user } = useAuth();
     
     const { setVisible } = useLoading();
@@ -304,6 +302,7 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
     const [openCard, setOpenCard] = useState<boolean>(false);
     const [uData, setuData] = useState<FullData|null>();
     const [ openDialog, setOpenDialog ] = useState<boolean>(false);
+    const [ flyingStringParams, setFlyingStringParams ] = useState<{text: string, top?: number, left?: number, right?: number, bottom?: number, visible: boolean}>({text: '', top: 0, left: 0, right: 0, bottom: 0, visible: false});
     const [ dialogResult, setDialogResult ] = useState<{ready: boolean, valStr: string, valBool: boolean, marker?: string}>({ready: false, valStr: '', valBool: false, marker: ''});
     
     const [openSnBar, setOpenSnBar] = React.useState({sever:true, open: false, text: ''});
@@ -466,7 +465,11 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
 
     return (
         <Fade in={true}>
-        <Box sx={{ width: '100%' }}>   
+        <Box sx={{ width: '100%' }}>
+            {flyingStringParams.visible&&<FlyingString 
+                flyingStringParams={flyingStringParams}
+                setFlyingStringParams={setFlyingStringParams}
+            />}
             {openCard&&<UsersCard 
                 setVisible={setOpenCard} 
                 uData={uData}  />}
@@ -529,7 +532,7 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                                                 <TableCell >{row.last_name}</TableCell>
                                                 {user?.role===Roles.Lord?<TableCell sx={{ padding: 0 }} >                                                
                                                     <Select
-                                                        sx={{ margin: 1, height: '50px' }}
+                                                        sx={{ margin: 1, height: '50px', width: '170px' }}
                                                         value={String(row.role)}
                                                         onChange={(event: SelectChangeEvent, us: any)=>handleNewRole(event, row)}
                                                     >
@@ -543,7 +546,18 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                                                     </Select>
                                                 </TableCell>:<TableCell >{row.role}</TableCell>}
                                                 {row?.banTime && ver === 'ban' && <TableCell>{(new Date(String(row.banTime)).toLocaleDateString())}</TableCell>}
-                                                <TableCell >{row.login}</TableCell>
+                                                <TableCell sx={{padding: 0}}>
+                                                    <Typography 
+                                                        sx={{margin: 1}}
+                                                        onMouseOver={(evt)=>{
+                                                            setFlyingStringParams({visible: false, text: '', top: 0, left: 0, right: 0, bottom: 0})
+                                                            setFlyingStringParams({visible: true, text: String(row.login), top: evt.clientY, left: evt.clientX, right: 0, bottom: 0})}
+                                                        }
+                                                        onMouseOut={()=>setFlyingStringParams({...flyingStringParams, text: '', top: 0, left: 0, right: 0, bottom: 0})}
+                                                    >
+                                                        {`${String(row.login).slice(0,10)}${String(row.login).length>9?'...':''}`}
+                                                    </Typography>
+                                                </TableCell>
                                                 {(ver!=='joined')&&(user?.role!==Roles.Secretary)?
                                                     <TableCell sx={{ padding: 0, height: '68px' }}>
                                                         {!goldLoad.load&&<Skeleton variant="rounded" animation="wave" width={150} height={50} />}

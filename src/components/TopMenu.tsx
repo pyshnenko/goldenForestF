@@ -1,18 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Typography from "@mui/material/Typography";
 import AppBar from "@mui/material/AppBar";
-import Button from "@mui/material/Button";
 import Toolbar from "@mui/material/Toolbar";
 import LinkUi from "@mui/material/Link";
 import { useAuth } from 'hooks/useAuth';
-import PagesConfig from 'types/Pages';
 import {Roles, Paths} from 'types/Enums';
 import UsersCard from 'components/UsersCard';
 import Settings from 'components/Settings';
+import TopButtons from 'components/TopButtons';
 import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
@@ -20,10 +18,10 @@ import Box from '@mui/material/Box';
 
 interface pagesObj {name: string, href: string};
 
-const pagesLord: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Заявки', href: '/joined'}, {name: 'Казна', href: '/Treasury'}, {name: 'Мероприятия', href: '/'}, {name: 'Забаненые', href: '/ban'}, {name: 'Поиск пользователя', href: '/'}];
-const pagesTreasurer: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Казна', href: '/Treasury'}, {name: 'Мероприятия', href: '/'}, {name: 'Поиск пользователя', href: '/'}];
-const pagesSecretary: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Заявки', href: '/joined'}, {name: 'Мероприятия', href: '/'}, {name: 'Забаненые', href: '/ban'}, {name: 'Поиск пользователя', href: '/'}];
-const pagesPeasant: pagesObj[] = [{name: 'Мероприятия', href: '/'}, {name: 'Поиск пользователя', href: '/'}];
+const pagesLord: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Заявки', href: '/joined'}, {name: 'Казна', href: '/Treasury'}, {name: 'Мероприятия', href: '/events'}, {name: 'Забаненые', href: '/ban'}];
+const pagesTreasurer: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Казна', href: '/Treasury'}, {name: 'Мероприятия', href: '/events'}];
+const pagesSecretary: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Заявки', href: '/joined'}, {name: 'Мероприятия', href: '/events'}, {name: 'Забаненые', href: '/ban'}];
+const pagesPeasant: pagesObj[] = [{name: 'Мероприятия', href: '/events'}];
 const pagesStranger: pagesObj[] = [{name: 'Заявка', href: '/join'}];
 const pagesNotUser: pagesObj[] = [{name: 'Вход', href: '/login'}, {name: 'Регистрация', href: '/register'}];
 const settingsUsers = ['Профиль', 'Кошелек', 'Настройки', 'Выход'];
@@ -105,7 +103,7 @@ export default function TopMenu() {
             sx={{ borderBottom: (theme) => `1px solid ${theme.palette.divider}` }}
         >
             <Toolbar sx={{ flexWrap: "nowrap", justifyContent: 'space-between' }}>
-                {width>500 ? <React.Fragment>
+                {width>1300 ? <React.Fragment>
                     <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
                         <LinkUi href="/">Золотые леса</LinkUi>
                     </Typography>                
@@ -116,31 +114,7 @@ export default function TopMenu() {
                     {user?.role === Roles.Citizen ? <Typography variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
                         Ваша заявка рассматривается
                     </Typography>: null}
-                    <Box>
-                        {!user?.email ? (
-                            <React.Fragment>
-                                <Button variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-                                    <LinkUi href="/login">Вход</LinkUi>
-                                </Button>
-
-                                <Button variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-                                    <LinkUi href="/register">Регистрация</LinkUi>
-                                </Button>
-                            </React.Fragment>
-                        ) : null}
-
-                        {!!user && (
-                            <>
-                                {Object.values(PagesConfig).map(({ url, role, name }: any, i) => {
-                                    return role && (( role.includes(user.role))||((user.role === Roles.Lord)&&(url !== Paths.Join))) ?
-                                        <Button key={i} variant="outlined" sx={{ my: 1, mx: 1.5 }}>
-                                            <LinkUi href={url}>{name}</LinkUi>
-                                        </Button> : null
-                                })}
-                            </>
-                        )}
-
-                    </Box>
+                    <TopButtons width={width} user={user}/>
                 </React.Fragment> :
                 <React.Fragment>
                     <IconButton
