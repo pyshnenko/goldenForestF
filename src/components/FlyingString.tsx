@@ -33,6 +33,11 @@ export default function FlyingString ({flyingStringParams, setFlyingStringParams
         else {
             clearTimeout(timer1);
             clearTimeout(timer2);
+            if (flyingStringParams.top&&(Math.abs(flyingStringParams.top-relTop)>20)) setRelTop(flyingStringParams.top)
+            if (flyingStringParams.left&&(Math.abs(flyingStringParams.left-relLeft)>20)) setRelLeft(flyingStringParams.left)
+            if (flyingStringParams.right&&(Math.abs(flyingStringParams.right-relRight)>20)) setRelRight(flyingStringParams.right)
+            if (flyingStringParams.bottom&&(Math.abs(flyingStringParams.bottom-relBottom)>20)) setRelBottom(flyingStringParams.bottom)
+            if (flyingStringParams.text!=='') setRelText(flyingStringParams.text);
         }
     }, [flyingStringParams, awaitMode])
 
@@ -53,7 +58,8 @@ export default function FlyingString ({flyingStringParams, setFlyingStringParams
                     backgroundColor: 'white',
                     border: '1px solid green',
                     borderRadius: '15px',
-                    boxShadow: '0 0 10px lightgreen'
+                    boxShadow: '0 0 10px lightgreen',
+                    zIndex: 99999
                 }}
                 onMouseOver={()=>setAwaitMode(true)}
                 onMouseOut={()=>setAwaitMode(false)}

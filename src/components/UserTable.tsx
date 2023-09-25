@@ -33,6 +33,7 @@ import Alert from '@mui/material/Alert';
 import { useLoading } from 'hooks/useLoading';
 import UsersCard from 'components/UsersCard';
 import FlyingString from 'components/FlyingString';
+import MoneyWindow from 'components/moneyWindow';
 import { DialogW, resultDialogType } from 'components/Dialog';
 import {FullData} from 'types/Requests';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -297,11 +298,12 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
     const [goldLoad, setGoldLoad] = useState<moneyTotalValue>({load: false, value: []});
     const [ready, setReady] = React.useState(false);
-    const [checgeMoneyValue,setChecgeMoneyValue] = React.useState({index: -1, value: 0});
+    const [checgeMoneyValue,setChecgeMoneyValue] = React.useState(-1);
     const { setVisible } = useLoading();
     const [openCard, setOpenCard] = useState<boolean>(false);
     const [uData, setuData] = useState<FullData|null>();
-    const [ openDialog, setOpenDialog ] = useState<boolean>(false);
+    const [ openDialog, setOpenDialog ] = useState<boolean>(false);    
+    const [ width, setWidth ] = useState<number>(window.innerWidth);
     const [ flyingStringParams, setFlyingStringParams ] = useState<{text: string, top?: number, left?: number, right?: number, bottom?: number, visible: boolean}>({text: '', top: 0, left: 0, right: 0, bottom: 0, visible: false});
     const [ dialogResult, setDialogResult ] = useState<{ready: boolean, valStr: string, valBool: boolean, marker?: string}>({ready: false, valStr: '', valBool: false, marker: ''});
     
@@ -345,6 +347,16 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                 setReady(true);
             });
         }
+        const handleResize = (event: any) => {
+            if (event.target.innerWidth!==null) {
+                setWidth(event.target.innerWidth);
+            }
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
     }, [])
 
     const handleRequestSort = (
@@ -547,7 +559,7 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                                                 </TableCell>:<TableCell >{row.role}</TableCell>}
                                                 {row?.banTime && ver === 'ban' && <TableCell>{(new Date(String(row.banTime)).toLocaleDateString())}</TableCell>}
                                                 <TableCell sx={{padding: 0}}>
-                                                    <Typography 
+                                                    {width<1200?<Typography 
                                                         sx={{margin: 1}}
                                                         onMouseOver={(evt)=>{
                                                             setFlyingStringParams({visible: false, text: '', top: 0, left: 0, right: 0, bottom: 0})
@@ -556,56 +568,22 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                                                         onMouseOut={()=>setFlyingStringParams({...flyingStringParams, text: '', top: 0, left: 0, right: 0, bottom: 0})}
                                                     >
                                                         {`${String(row.login).slice(0,10)}${String(row.login).length>9?'...':''}`}
-                                                    </Typography>
+                                                    </Typography> :
+                                                    <Typography>{row.login}</Typography>}
                                                 </TableCell>
                                                 {(ver!=='joined')&&(user?.role!==Roles.Secretary)?
                                                     <TableCell sx={{ padding: 0, height: '68px' }}>
                                                         {!goldLoad.load&&<Skeleton variant="rounded" animation="wave" width={150} height={50} />}
                                                         {goldLoad.load&&<Box sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                                                             <Typography>{row.gold}</Typography>
-                                                            {checgeMoneyValue.index===-1&&<IconButton
+                                                            {checgeMoneyValue===-1&&<IconButton
                                                                 onClick={()=>{
-                                                                    setChecgeMoneyValue({index, value: 0})
+                                                                    setChecgeMoneyValue(index)
                                                                 }}
                                                             >
                                                                 <ModeEditIcon />
                                                             </IconButton>}
-                                                            {index===checgeMoneyValue.index&&<TextField 
-                                                                sx={{ width: '100px' }}
-                                                                value={index===checgeMoneyValue.index ? checgeMoneyValue.value : row.gold} 
-                                                                variant="outlined" 
-                                                                onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
-                                                                    const vv = Number(evt.target.value)
-                                                                    if (vv || vv===0) setChecgeMoneyValue({index, value: Number(evt.target.value)})
-                                                                }}
-                                                            />}                                                 
-                                                            {index===checgeMoneyValue.index&&<IconButton onClick={()=>{
-                                                                const prom = Api.newGoldValue(user, {login: String(row.login), value: checgeMoneyValue.value, date: Number(new Date())});
-                                                                setChecgeMoneyValue({index: -1, value: 0});
-                                                                if (checgeMoneyValue.value!==0) {
-                                                                    setVisible(true);
-                                                                    prom.then((res: any)=>{
-                                                                        let buf = copy(users);
-                                                                        for (let i=0; i<buf.length; i++) {
-                                                                            if (buf[i].login===row.login) {
-                                                                                buf[i].gold = Number(row.gold) + checgeMoneyValue.value;
-                                                                                setUsers(buf);
-                                                                                break;
-                                                                            }
-                                                                        }
-                                                                        setVisible(false);
-                                                                        setOpenSnBar({sever:true, open: true, text: 'Сохранено'});
-                                                                        setChecgeMoneyValue({index: -1, value: 0});
-                                                                    })
-                                                                    .catch((err)=>{
-                                                                        console.log(err);
-                                                                        setVisible(false);
-                                                                        setOpenSnBar({sever:false, open: true, text: 'Ошибка'});
-                                                                    })
-                                                                }
-                                                            }}>
-                                                                <CheckIcon />
-                                                            </IconButton>}
+                                                            {index===checgeMoneyValue&&<MoneyWindow login={row.login} money={row.gold} users={users} setUsers={setUsers} setOpenSnBar={setOpenSnBar} setVisibleIndex={setChecgeMoneyValue} />}
                                                         </Box>}
                                                     </TableCell>:
                                                     null

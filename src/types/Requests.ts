@@ -69,3 +69,11 @@ export interface newGoldData {
     date: number,
     way?: string
 }
+
+export interface addToTreasuryData {
+    login: string,
+    value: number,
+    date: number,
+    addr?: string,
+    way: string
+}
