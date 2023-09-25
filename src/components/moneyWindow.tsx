@@ -87,7 +87,8 @@ export default function MoneyWindow({login, money, events, users, setUsers, setO
                     boxShadow: '0 0 10px aliceblue',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    width: window.innerWidth<600?'90%':'auto'
                 }}>
                     <Box sx={{
                         width: '100%',
@@ -97,12 +98,13 @@ export default function MoneyWindow({login, money, events, users, setUsers, setO
                         margin: '0 20px 20px 20px',
                         padding: '0 20px'
                     }}>
-                        <Typography>{login}</Typography>
+                        <Typography>{String(login).length>10?`${String(login).slice(0,10)}...`:login}</Typography>
                         <Typography>{money}</Typography>
                     </Box>
-                    <Box>
+                    <Box sx={{textAlign: 'center'}}>
                         <Typography>Выделить из казны: </Typography>
                         <TextField 
+                            sx={{width: '75%'}}
                             variant="outlined"
                             value={chengeMoney}
                             onChange={({target})=>setChengeMoney(target.value)}
@@ -136,9 +138,10 @@ export default function MoneyWindow({login, money, events, users, setUsers, setO
                             <CheckIcon />
                         </IconButton>
                     </Box>
-                    <Box>
+                    <Box sx={{textAlign: 'center'}}>
                         <Typography>Перевести в казну: </Typography>
                         <TextField 
+                            sx={{width: '75%'}}
                             variant="outlined"
                             value={moneyToTreasure}
                             onChange={({target})=>setMoneyToTreasure(target.value)}
@@ -172,9 +175,10 @@ export default function MoneyWindow({login, money, events, users, setUsers, setO
                             <CheckIcon />
                         </IconButton>
                     </Box>
-                    <Box>
+                    <Box sx={{textAlign: 'center'}}>
                         <Typography>Изменить балланс: </Typography>
                         <TextField 
+                            sx={{width: '75%'}}
                             variant="outlined"
                             value={moneyToWallet}
                             onChange={({target})=>setMoneyToWallet(target.value)}

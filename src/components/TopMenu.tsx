@@ -18,8 +18,8 @@ import Box from '@mui/material/Box';
 
 interface pagesObj {name: string, href: string};
 
-const pagesLord: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Заявки', href: '/joined'}, {name: 'Казна', href: '/Treasury'}, {name: 'Мероприятия', href: '/events'}, {name: 'Забаненые', href: '/ban'}];
-const pagesTreasurer: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Казна', href: '/Treasury'}, {name: 'Мероприятия', href: '/events'}];
+const pagesLord: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Заявки', href: '/joined'}, {name: 'Казна', href: '/treasury'}, {name: 'Мероприятия', href: '/events'}, {name: 'Забаненые', href: '/ban'}];
+const pagesTreasurer: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Казна', href: '/treasury'}, {name: 'Мероприятия', href: '/events'}];
 const pagesSecretary: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Заявки', href: '/joined'}, {name: 'Мероприятия', href: '/events'}, {name: 'Забаненые', href: '/ban'}];
 const pagesPeasant: pagesObj[] = [{name: 'Мероприятия', href: '/events'}];
 const pagesStranger: pagesObj[] = [{name: 'Заявка', href: '/join'}];
