@@ -42,6 +42,7 @@ export default function App() {
     setVisible(true);
     const params = new URLSearchParams(window.location.search);
     let done = params.get('name');
+    console.log(done);
     if (done) {
       const ver = Api.verify(done);
       ver.then((res)=>{
