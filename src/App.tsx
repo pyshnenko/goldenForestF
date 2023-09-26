@@ -43,7 +43,11 @@ export default function App() {
     const params = new URLSearchParams(window.location.search);
     let done = params.get('name');
     if (done) {
-      console.log(done);
+      const ver = Api.verify(done);
+      ver.then((res)=>{
+        console.log(res);
+      })
+      ver.catch((e)=>console.log(e));
     }
     const settingString: string | null = localStorage.getItem('gfLocalSettings');
     if (settingString !== '') {
