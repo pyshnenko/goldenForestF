@@ -46,7 +46,7 @@ export default function App() {
     if (done) {
       const ver = Api.verify(done);
       ver.then((res)=>{
-        console.log(res);
+        setValidAddr(true);
       })
       ver.catch((e)=>console.log(e));
     }
@@ -72,6 +72,7 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme(font)}>
+      {validAddr&&<h1>E-mail подтвержден</h1>}
       <TopMenu />
       <Loading visible={visible} />
       {ready&&<div className="App">
