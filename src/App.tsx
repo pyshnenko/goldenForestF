@@ -41,7 +41,7 @@ export default function App() {
     console.log(user);
     setVisible(true);
     const params = new URLSearchParams(window.location.search);
-    let done = params.get('page');
+    let done = params.get('name');
     if (done) {
       console.log(done);
     }
