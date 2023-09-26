@@ -19,4 +19,4 @@ export const privateApi = (token: Nullable<String>) => axios.create({
   }
 });
 
-export const getApi = (value: String)=> axios.get(`${baseURL}/register?name=${value}`)
+export const getApi = (value: string)=> axios.get(`${baseURL}/register?name=${encodeURIComponent(value)}`)
