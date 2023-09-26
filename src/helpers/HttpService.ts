@@ -18,3 +18,5 @@ export const privateApi = (token: Nullable<String>) => axios.create({
     "Authorization": `Bearer ${token}`
   }
 });
+
+export const getApi = (value: String)=> axios.get(`${baseURL}/register?name=${value}`)

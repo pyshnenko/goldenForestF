@@ -34,11 +34,17 @@ export default function App() {
   const { user, login, saveFull } = useAuth();
   const [ ready, setReady ] = React.useState<boolean>(false);
   const [ font, setFont ] = React.useState<string>('sans-serif');
+  const [validAddr, setValidAddr] = React.useState<boolean>(false);
   const { visible, setVisible } = createVisible();
 
   React.useEffect(()=>{
     console.log(user);
     setVisible(true);
+    const params = new URLSearchParams(window.location.search);
+    let done = params.get('page');
+    if (done) {
+      console.log(done);
+    }
     const settingString: string | null = localStorage.getItem('gfLocalSettings');
     if (settingString !== '') {
       const parsedSettingString = JSON.parse(String(settingString));

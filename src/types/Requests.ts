@@ -6,7 +6,8 @@ export interface LoginResData {
 }
 
 export interface LoginReqData {
-    login: String,
+    login?: String,
+    email?: String,
     password: String
 }
 
@@ -14,6 +15,7 @@ export interface RegisterReqData {
     first_name: String,
     last_name: String,
     login: String,
+    email: String,
     password: String
 }
 export interface JoinReqData { 

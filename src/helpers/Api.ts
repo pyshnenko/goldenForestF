@@ -1,6 +1,10 @@
-import { loginApi, privateApi } from "./HttpService";
+import { loginApi, privateApi, getApi } from "./HttpService";
 import { LoginResData, LoginReqData, RegisterReqData, User, Checked, newGoldData, addToTreasuryData } from 'types/Requests'
 import { NullableUser } from "types/User";
+
+const verify = (value: string) => {
+    return getApi(value);
+}
 
 const login = (data: LoginReqData) => {
     return loginApi().post<Array<LoginResData>>('/login', data);
@@ -67,7 +71,8 @@ const Api = {
     goldTable,
     newGoldValue,
     addToTreasury,
-    checkTotalMoneyTreasure
+    checkTotalMoneyTreasure,
+    verify
 }
 
 export default Api

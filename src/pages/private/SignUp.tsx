@@ -12,27 +12,53 @@ import Api from 'helpers/Api';
 import { useAuth } from 'hooks/useAuth';
 
 export default function SignUp() {
-  const { login } = useAuth();
+  const auth = useAuth();
+  const [loginCheck, setLoginCheck] = React.useState<boolean>(false);
+  const [emailCheck, setEmailCheck] = React.useState<boolean>(false);
+  const [errorState, setErrorState] = React.useState<boolean>(false);
+  const [emailTest, setEmailText] = React.useState<string>('Email');
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    const email: any = form.get('email');
-    const password: any = form.get('password');
-    const firstName: any = form.get('firstName');
-    const lastName: any = form.get('lastName');
-    
-    const loginInfo: RegisterReqData = {
-      first_name: firstName,
-      last_name: lastName,
-      login: email,
-      password,
-    };
+    const email: string = String(form.get('email'));
+    const llogin: string = String(form.get('login'));
+    const password: string = String(form.get('password'));
+    const firstName: string = String(form.get('firstName'));
+    const lastName: string = String(form.get('lastName'));
 
-    const { data }: any = await Api.register(loginInfo);
-    const { token, first_name: regFName, last_name: regLName, role, gold } = data;
-    login({token, firstName: regFName, lastName: regLName, role, email, gold});
-    // navigate('/join');
+    if ((email!=='')&&(llogin!=='')&&(password!=='')&&(firstName!=='')&&(lastName!==''))
+    {
+      setErrorState(false);
+      if (email.indexOf('@')===-1) {
+        setEmailCheck(true);
+        setEmailText('Email некорректен');
+      }
+      else {
+        setEmailCheck(false);
+        setEmailText('Email');
+        const loginInfo: RegisterReqData = {
+          first_name: firstName,
+          last_name: lastName,
+          login: llogin,
+          email,
+          password,
+        };
+        console.log(loginInfo);
+        const checkData: {data: {login: boolean, email: boolean}} = await Api.checkData({login: llogin, email});
+        if (checkData.data.login&&checkData.data.email) {
+          const { data }: any = await Api.register(loginInfo);
+          const { token, first_name: regFName, last_name: regLName, role, gold, rLogin: login, rEmail: email } = data;
+          auth.login({token, firstName: regFName, lastName: regLName, role, email, gold});
+        }
+        else {
+          setLoginCheck(!checkData.data.login);      
+          setEmailCheck(!checkData.data.email);
+        }
+      }
+    }
+    else setErrorState(true);
+    //navigator('/join');
   };
 
   return (
@@ -49,6 +75,10 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
+          {errorState&&
+          <Typography component="h1" variant="h5" sx={{color: 'red'}}>
+            Заполни все поля!!!
+          </Typography>}
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
@@ -58,7 +88,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="firstName"
-                  label="First Name"
+                  label="Имя"
                   autoFocus
                 />
               </Grid>
@@ -67,7 +97,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   id="lastName"
-                  label="Last Name"
+                  label="Фамилия"
                   name="lastName"
                   autoComplete="family-name"
                 />
@@ -76,10 +106,22 @@ export default function SignUp() {
                 <TextField
                   required
                   fullWidth
+                  id="login"
+                  label="Псевдоним"
+                  name="login"
+                  autoComplete="login"
+                  error={loginCheck}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
                   id="email"
-                  label="Email Address"
+                  label={emailTest}
                   name="email"
                   autoComplete="email"
+                  error={emailCheck}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -87,7 +129,7 @@ export default function SignUp() {
                   required
                   fullWidth
                   name="password"
-                  label="Password"
+                  label="Пароль"
                   type="password"
                   id="password"
                   autoComplete="new-password"
@@ -111,7 +153,7 @@ export default function SignUp() {
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/login" variant="body2">
-                  Already have an account? Sign in
+                  Зарегистрирован? Войди
                 </Link>
               </Grid>
             </Grid>
