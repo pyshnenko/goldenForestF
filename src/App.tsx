@@ -60,7 +60,7 @@ export default function App() {
       prom.then(({data}: any)=>{
         console.log(data);
         const { token, first_name: firstName, last_name: lastName, role, gold } = data;
-        login({token, firstName, lastName, role, email: data.login, gold}, window.location.pathname);
+        login({token, firstName, lastName, role, email: data.email, gold, login: data.login}, window.location.pathname);
         setReady(true);
         console.log('anim');
         setVisible(false);

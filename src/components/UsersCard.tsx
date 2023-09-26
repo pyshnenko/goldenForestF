@@ -22,7 +22,9 @@ const names = [
     {name: 'first_name', title: 'Имя', private: false},
     {name: 'surname', title: 'Отчество', private: false},
     {name: 'last_name', title: 'Фамилия', private: false},
-    {name: 'login', title: 'Почта', private: false},
+    {name: 'login', title: 'Логин', private: false},
+    {name: 'email', title: 'Почта', private: false},
+    {name: 'emailVerify', title: 'Валиден?', private: false},
     {name: 'gold', title: 'Балланс', private: true},
     {name: 'role', title: 'Положение', private: false},
     {name: 'banTime', title: 'бан до:', private: false},
@@ -140,6 +142,7 @@ export default function Loading({login, uData, setVisible}: inpData) {
                                     (new Date(userCard[item.name])).toLocaleDateString() : 
                                     item.name === 'banTime' ? 
                                         (new Date(String(userCard[item.name]))).toLocaleDateString() : 
+                                        item.name === 'emailVerify' ? item.name ? 'Да':'Нет':
                                         userCard[item.name]}</Typography>
                             </Box>}
                         </React.Fragment>

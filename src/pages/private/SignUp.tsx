@@ -49,7 +49,7 @@ export default function SignUp() {
         if (checkData.data.login&&checkData.data.email) {
           const { data }: any = await Api.register(loginInfo);
           const { token, first_name: regFName, last_name: regLName, role, gold, rLogin: login, rEmail: email } = data;
-          auth.login({token, firstName: regFName, lastName: regLName, role, email, gold});
+          auth.login({token, firstName: regFName, lastName: regLName, role, email, gold, login: llogin});
         }
         else {
           setLoginCheck(!checkData.data.login);      

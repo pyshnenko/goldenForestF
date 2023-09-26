@@ -24,7 +24,7 @@ export default function SignInSide() {
     const password: any = form.get('password');
 
     const loginInfo: LoginReqData = {
-      login: email,
+      email: email,
       password,
     };
 
@@ -32,7 +32,7 @@ export default function SignInSide() {
     const { token, first_name: firstName, last_name: lastName, role, gold } = data;
     console.log(data)
     
-    login({token, firstName, lastName, role, email, gold});
+    login({token, firstName, lastName, role, email, gold, login: data.login});
     saveFull(data)
   };
 

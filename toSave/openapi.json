@@ -44,9 +44,9 @@
     "/goldTreasury/addToTreasury": {
       "post": {
         "tags": [
-          "Из кошелька куда-то"
+          "Операции с казной"
         ],
-        "summary": "Обновление частных данных в казне",
+        "summary": "Из кошелька куда-то",
         "operationId": "goldTreasury_addToTreasury",
         "requestBody": {
           "required": true,
@@ -509,6 +509,10 @@
                 "properties": {
                   "login": {
                     "type": "string",
+                    "example": "pyshnenko"
+                  },
+                  "email": {
+                    "type": "string",
                     "example": "pyshnenko94@yandex.ru"
                   }
                 }
@@ -825,9 +829,9 @@
       "upd": {
         "type": "object",
         "properties": {
-          "login": {
+          "email": {
             "type": "string",
-            "example": "pyshnenko94@yandex2.ru"
+            "example": "pyshnenko94@yandex.ru"
           },
           "role": {
             "type": "string",
@@ -852,17 +856,17 @@
           },
           "login": {
             "type": "string",
-            "example": "pyshnenko94@yandex.ru"
+            "example": "Spamigor"
+          },
+          "email": {
+            "type": "string",
+            "example": "Pyshnenko94@yandex.ru"
           }
         }
       },
       "join": {
         "type": "object",
         "properties": {
-          "nickname": {
-            "type": "string",
-            "example": "megatron"
-          },
           "first_name": {
             "type": "string",
             "example": "test_name"
@@ -877,7 +881,7 @@
           },
           "login": {
             "type": "string",
-            "example": "pyshnenko94@yandex.ru"
+            "example": "Spamigor"
           },
           "phone": {
             "type": "number",
@@ -910,11 +914,11 @@
         "properties": {
           "password": {
             "type": "string",
-            "example": "test"
+            "example": "12101994a"
           },
-          "login": {
+          "email": {
             "type": "string",
-            "example": "pyshnenko94@yandex.ru"
+            "example": "Pyshnenko94@yandex.ru"
           }
         }
       },

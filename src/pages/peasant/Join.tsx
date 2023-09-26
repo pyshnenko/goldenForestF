@@ -31,7 +31,6 @@ export default function Join(args: any) {
   const [ checked, setChecked ] = useState<{nickname: boolean | null, phone: boolean | null}>({nickname: null, phone: null})
   const [ error, setError ] = useState(
     {
-      nickname: false,
       first_name: false,
       last_name: false,
       surname: false,
@@ -98,7 +97,6 @@ export default function Join(args: any) {
     const form = new FormData(event.currentTarget);
 
     const data: any = {
-      nickname: form.get('nickname'),
       first_name: form.get('firstName'),
       last_name: form.get('lastName'),
       surname: form.get('surname'),
@@ -148,20 +146,13 @@ export default function Join(args: any) {
               <Grid item xs={12}>
                 <TextField
                   autoFocus
-                  error={error.nickname}
                   required
                   fullWidth
                   id="nickname"
                   label="Ник"
-                  name="nickname"
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        {checked.nickname ? <CheckIcon sx={{ color: 'green' }} /> : checked.nickname === false ? <CloseIcon sx={{ color: 'red' }} /> : null}
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={(evt: React.ChangeEvent<HTMLInputElement>)=>checkNick(evt)}
+                  name="login"                  
+                  disabled={true}
+                  value={user?.login||''}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>

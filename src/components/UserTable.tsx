@@ -115,7 +115,7 @@ const headCells: readonly HeadCell[] = [
         id: 'login',
         numeric: false,
         disablePadding: false,
-        label: 'Пошта',
+        label: 'Логин',
     },
     {
         id: 'gold',
