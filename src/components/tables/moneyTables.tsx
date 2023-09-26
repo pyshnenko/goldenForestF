@@ -198,6 +198,7 @@ export default function MoneyTable ({variant, setReadyBack, table, index}: {vari
                                                         key={headCell.id}
                                                         align={headCell.numeric ? 'right' : 'left'}
                                                         padding={headCell.disablePadding ? 'none' : 'normal'}
+                                                        sx={{fontSize: 'medium'}}
                                                     >
                                                         {(index===2)&&(width<=800)?'':headCell.label}
                                                     </TableCell>
@@ -220,12 +221,13 @@ export default function MoneyTable ({variant, setReadyBack, table, index}: {vari
                                                                 id={labelId}
                                                                 scope="row"
                                                                 padding="none"
+                                                                sx={{fontSize: 'medium'}}
                                                             >
                                                                 {row.login}
                                                             </TableCell>
-                                                            <TableCell align="right" sx={{color: row.value>0?'green':'red'}}>{row.value}</TableCell>
-                                                            {(width>800)&&<TableCell align="right" sx={{fontSize: '1rem'}}>{(new Date(row.date)).toLocaleString()}</TableCell>}
-                                                            {(width>800)&&<TableCell align="right">{row.way || ''}</TableCell>}
+                                                            <TableCell align="right" sx={{color: row.value>0?'green':'red', fontSize: 'medium'}}>{row.value}</TableCell>
+                                                            {(width>800)&&<TableCell align="right" sx={{fontSize: 'medium'}}>{(new Date(row.date)).toLocaleString()}</TableCell>}
+                                                            {(width>800)&&<TableCell align="right" sx={{fontSize: 'medium'}}>{row.way?row.way.length>15?row.way.slice(0,15)+'...':row.way:''}</TableCell>}
                                                             {width<=800&&<TableCell><IconButton><InfoIcon /></IconButton></TableCell>}
                                                         </TableRow>
                                                     );
