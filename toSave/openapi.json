@@ -38,9 +38,245 @@
         "description": "Развернуть",
         "url": "http://spamigor.ru/api/goldTreasury/"
       }
+    },
+    {
+      "name": "Мероприятия",
+      "description": "Обрработка запросов по мероприятиям",
+      "externalDocs": {
+        "description": "Развернуть",
+        "url": "http://spamigor.ru/api/events/"
+      }
     }
   ],
   "paths": {
+    "/events/add": {
+      "post": {
+        "tags": [
+          "Мероприятия"
+        ],
+        "summary": "Создать мероприятие",
+        "operationId": "events_add",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "type": "string",
+                    "example": "Spamigor"
+                  },
+                  "example": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "pict": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "default": [
+                        "html 1",
+                        "addr 2"
+                      ]
+                    }
+                  },
+                  "text": {
+                    "type": "string",
+                    "example": "Текст с описанием мероприятия"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Название мероприятия"
+                  },
+                  "gold": {
+                    "type": "number",
+                    "example": 10000
+                  },
+                  "nowGold": {
+                    "type": "number",
+                    "example": 1000
+                  },
+                  "date": {
+                    "type": "number",
+                    "example": 123456789
+                  },
+                  "activeMembers": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "default": [
+                        "Spamigor",
+                        "Treasurer"
+                      ]
+                    }
+                  },
+                  "orginizer": {
+                    "type": "string",
+                    "example": "Spamigor"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Выполнено"
+          },
+          "401": {
+            "description": "Недостаточно прав"
+          },
+          "402": {
+            "description": "Не авторизован"
+          },
+          "403": {
+            "description": "Некорректный токен или данные"
+          }
+        },
+        "security": [
+          {
+            "B_auth": []
+          }
+        ]
+      }
+    },
+    "/events/update": {
+      "post": {
+        "tags": [
+          "Мероприятия"
+        ],
+        "summary": "Обновить мероприятие",
+        "operationId": "events_upd",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "type": "string",
+                    "example": "Spamigor"
+                  },
+                  "example": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  },
+                  "pict": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "default": [
+                        "html 1",
+                        "addr 2"
+                      ]
+                    }
+                  },
+                  "text": {
+                    "type": "string",
+                    "example": "Текст с описанием мероприятия"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Новое название мероприятия"
+                  },
+                  "gold": {
+                    "type": "number",
+                    "example": 10000
+                  },
+                  "date": {
+                    "type": "number",
+                    "example": 123456789
+                  },
+                  "activeMembers": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "default": [
+                        "Spamigor",
+                        "Treasurer"
+                      ]
+                    }
+                  },
+                  "orginizer": {
+                    "type": "string",
+                    "example": "Spamigor"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Выполнено"
+          },
+          "401": {
+            "description": "Недостаточно прав"
+          },
+          "402": {
+            "description": "Не авторизован"
+          },
+          "403": {
+            "description": "Некорректный токен или данные"
+          }
+        },
+        "security": [
+          {
+            "B_auth": []
+          }
+        ]
+      }
+    },
+    "/events/list": {
+      "post": {
+        "tags": [
+          "Мероприятия"
+        ],
+        "summary": "Список мероприятий",
+        "operationId": "events_list",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number",
+                    "example": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Выполнено"
+          },
+          "401": {
+            "description": "Недостаточно прав"
+          },
+          "402": {
+            "description": "Не авторизован"
+          },
+          "403": {
+            "description": "Некорректный токен или данные"
+          }
+        },
+        "security": [
+          {
+            "B_auth": []
+          }
+        ]
+      }
+    },
     "/goldTreasury/addToTreasury": {
       "post": {
         "tags": [
@@ -57,7 +293,7 @@
                 "properties": {
                   "login": {
                     "type": "string",
-                    "example": "pyshnenko94@yandex.ru"
+                    "example": "Spamigor"
                   },
                   "value": {
                     "type": "number",
@@ -68,8 +304,8 @@
                     "example": 1686294178574
                   },
                   "addr": {
-                    "type": "string",
-                    "example": "total"
+                    "type": "number",
+                    "example": 0
                   },
                   "way": {
                     "type": "string",
@@ -117,7 +353,7 @@
                 "properties": {
                   "login": {
                     "type": "string",
-                    "example": "pyshnenko94@yandex.ru"
+                    "example": "Spamigor"
                   },
                   "value": {
                     "type": "number",
@@ -128,8 +364,8 @@
                     "example": 1686294178574
                   },
                   "addr": {
-                    "type": "string",
-                    "example": "total"
+                    "type": "number",
+                    "example": 0
                   }
                 }
               }
@@ -173,7 +409,7 @@
                 "properties": {
                   "login": {
                     "type": "string",
-                    "example": "pyshnenko94@yandex.ru"
+                    "example": "Spamigor"
                   },
                   "value": {
                     "type": "number",
@@ -184,8 +420,8 @@
                     "example": 1686294178574
                   },
                   "addr": {
-                    "type": "string",
-                    "example": "total"
+                    "type": "number",
+                    "example": 0
                   }
                 }
               }
@@ -229,11 +465,11 @@
                 "properties": {
                   "login": {
                     "type": "string",
-                    "example": "pyshnenko94@yandex.ru"
+                    "example": "Spamigor"
                   },
                   "addr": {
-                    "type": "string",
-                    "example": "total"
+                    "type": "number",
+                    "example": 0
                   }
                 }
               }
@@ -277,7 +513,7 @@
                 "properties": {
                   "login": {
                     "type": "string",
-                    "example": "pyshnenko94@yandex.ru"
+                    "example": "Spamigor"
                   },
                   "status": {
                     "type": "number",
@@ -329,7 +565,7 @@
                 "properties": {
                   "login": {
                     "type": "string",
-                    "example": "pyshnenko94@yandex.ru"
+                    "example": "Spamigor"
                   },
                   "value": {
                     "type": "number",
@@ -381,7 +617,7 @@
                 "properties": {
                   "login": {
                     "type": "string",
-                    "example": "pyshnenko94@yandex.ru"
+                    "example": "Spamigor"
                   },
                   "value": {
                     "type": "number",
@@ -437,7 +673,7 @@
                 "properties": {
                   "login": {
                     "type": "string",
-                    "example": "pyshnenko94@yandex.ru"
+                    "example": "Spamigor"
                   }
                 }
               }
@@ -509,11 +745,11 @@
                 "properties": {
                   "login": {
                     "type": "string",
-                    "example": "pyshnenko"
+                    "example": "Spamigor"
                   },
                   "email": {
                     "type": "string",
-                    "example": "pyshnenko94@yandex.ru"
+                    "example": "Pyshnenko94@yandex.ru"
                   }
                 }
               }
@@ -795,7 +1031,7 @@
                 "properties": {
                   "login": {
                     "type": "string",
-                    "example": "pyshnenko94@yandex2.ru"
+                    "example": "Spamigor"
                   }
                 }
               }
@@ -831,7 +1067,7 @@
         "properties": {
           "email": {
             "type": "string",
-            "example": "pyshnenko94@yandex.ru"
+            "example": "Pyshnenko94@yandex.ru"
           },
           "role": {
             "type": "string",

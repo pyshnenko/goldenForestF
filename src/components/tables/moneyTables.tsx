@@ -116,7 +116,7 @@ export default function MoneyTable ({variant, setReadyBack, table, index}: {vari
             variant === 'treasure' ? Api.checkTotalMoneyTreasure(user) : 
             Api.checkTotalMoney(user);
             res.then((result: any)=>{
-                console.log(result.data.res.data.history);
+                console.log(result.data);
                 setRows(result.data.res.data.history);
                 setTotal(result.data.res.data.total);
             });

@@ -6,6 +6,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import SignUp from "pages/private/SignUp";
 import SignIn from "pages/private/SignIn";
 import Main from "pages/public/Main";
+import Events from "pages/public/Events";
 // components
 import TopMenu from "components/TopMenu";
 import Loading from "components/loading";
@@ -63,7 +64,6 @@ export default function App() {
         login({token, firstName, lastName, role, email: data.email, gold, login: data.login}, window.location.pathname);
         setReady(true);
         console.log('anim');
-        setVisible(false);
         saveFull(data);
       })
     }
@@ -72,14 +72,15 @@ export default function App() {
 
   return (
     <ThemeProvider theme={theme(font)}>
-      {validAddr&&<h1>E-mail подтвержден</h1>}
       <TopMenu />
+      {validAddr&&<h1>E-mail подтвержден</h1>}
       <Loading visible={visible} />
       {ready&&<div className="App">
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
+          <Route path="/events" element={<Events />} />
           <Route path="/join" 
             element={ <PrivateRoute> <Join userRole = {[Roles.Stranger]}/> </PrivateRoute> }
           />

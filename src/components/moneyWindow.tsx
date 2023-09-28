@@ -110,7 +110,7 @@ export default function MoneyWindow({login, money, events, users, setUsers, setO
                             onChange={({target})=>setChengeMoney(target.value)}
                         />
                         <IconButton onClick={()=>{
-                            const prom = Api.addToTreasury(user, {login: String(login), value: -Number(chengeMoney), date: Number(new Date()), addr: 'total', way: `для ${login}`});
+                            const prom = Api.addToTreasury(user, {login: String(login), value: -Number(chengeMoney), date: Number(new Date()), addr: 0, way: `для ${login}`});
                             if (chengeMoney!=='0') {
                                 setVisible(true);
                                 prom.then((res: any)=>{
@@ -147,7 +147,7 @@ export default function MoneyWindow({login, money, events, users, setUsers, setO
                             onChange={({target})=>setMoneyToTreasure(target.value)}
                         />
                         <IconButton onClick={()=>{
-                            const prom = Api.addToTreasury(user, {login: String(login), value: Number(moneyToTreasure), date: Number(new Date()), addr: 'total', way: 'В казну'});
+                            const prom = Api.addToTreasury(user, {login: String(login), value: Number(moneyToTreasure), date: Number(new Date()), addr: 0, way: 'В казну'});
                             if (moneyToTreasure!=='0') {
                                 setVisible(true);
                                 prom.then((res: any)=>{

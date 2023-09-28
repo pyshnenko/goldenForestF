@@ -1,5 +1,5 @@
 import { loginApi, privateApi, getApi } from "./HttpService";
-import { LoginResData, LoginReqData, RegisterReqData, User, Checked, newGoldData, addToTreasuryData } from 'types/Requests'
+import { LoginResData, LoginReqData, RegisterReqData, User, Checked, newGoldData, addToTreasuryData, Event } from 'types/Requests'
 import { NullableUser } from "types/User";
 
 const verify = (value: string) => {
@@ -54,8 +54,20 @@ const addToTreasury = (user: NullableUser, bodyData: addToTreasuryData ) => {
     return privateApi(user?.token || null).post('/goldTreasury/addToTreasury', {...bodyData});
 };
 
-const checkTotalMoneyTreasure = (user: NullableUser, addr: string='total') => {
+const checkTotalMoneyTreasure = (user: NullableUser, addr: number=0) => {
     return privateApi(user?.token || null).post('/goldTreasury/total', addr);
+};
+
+const addNewEvent = (user: NullableUser, evnt: Event) => {
+    return privateApi(user?.token || null).post('/events/add', evnt);
+};
+
+const UpdEvent = (user: NullableUser, evnt: Event) => {
+    return privateApi(user?.token || null).post('/events/update', evnt);
+};
+
+const eventsList = (user: NullableUser, id?: number) => {
+    return privateApi(user?.token || null).post('/events/list', id);
 };
 
 const Api = {
@@ -72,7 +84,10 @@ const Api = {
     newGoldValue,
     addToTreasury,
     checkTotalMoneyTreasure,
-    verify
+    verify,
+    addNewEvent,
+    UpdEvent,
+    eventsList
 }
 
 export default Api

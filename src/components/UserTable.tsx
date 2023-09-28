@@ -26,8 +26,6 @@ import {Roles} from 'types/Enums';
 import { banTime, banVal, banTo, moneyTotalValue } from 'types/variable';
 import Api from 'helpers/Api';
 import { useAuth } from 'hooks/useAuth';
-import TextField from '@mui/material/TextField';
-import CheckIcon from '@mui/icons-material/Check';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 import { useLoading } from 'hooks/useLoading';
@@ -492,7 +490,7 @@ export default function EnhancedTable({ users, setUsers, ver }: {users: any, set
                 result={setDialogResult} 
                 changes={banTime}
                 marker={'banSet'} />
-            <Snackbar open={openSnBar.open} autoHideDuration={6000} onClose={handleClose}>
+            <Snackbar open={openSnBar.open} autoHideDuration={6000} onClose={handleClose} sx={{zIndex: '999999'}}>
                 <Alert onClose={handleClose} severity={openSnBar.sever?"success":"error"} sx={{ width: '100%' }}>
                     {openSnBar.text}
                 </Alert>

@@ -76,6 +76,18 @@ export interface addToTreasuryData {
     login: string,
     value: number,
     date: number,
-    addr?: string,
+    addr?: number,
     way: string
+}
+
+export interface Event {
+    pict: string[],
+    text: string,
+    id?: number, 
+    name: string,
+    gold: number,
+    activeMembers: string[],
+    orginizer: string[],
+    nowGold?: number,
+    date: number
 }

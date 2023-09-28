@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import CircularProgress from '@mui/material/CircularProgress';
 import CssBaseline from '@mui/material/CssBaseline';
 import { useLoading } from 'hooks/useLoading';
 
@@ -52,7 +51,6 @@ export default function Members(args: any) {
           Пользователи
         </Typography>
         <br />
-        {!userList.length && <CircularProgress color="secondary" />}
       </Box>
       {ready&&<UserTable users={userList} setUsers={setUserList} ver={'authorize'} />}
     </React.Fragment>
