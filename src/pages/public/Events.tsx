@@ -11,9 +11,11 @@ import AddIcon from '@mui/icons-material/Add';
 import { Button, CardActionArea, CardActions, Fab } from '@mui/material';
 import Api from 'helpers/Api';
 import { useAuth } from 'hooks/useAuth';
+import AddNewEventList from 'components/addNewEventsList';
 
 export default function EventsPage () {
     const { setVisible } = useLoading();
+    const [ newEventListOpen, setNewEventListOpen ] = useState<boolean>(false);
     const trig = useRef<boolean>(true);  
     const { user } = useAuth();
 
@@ -33,6 +35,7 @@ export default function EventsPage () {
     return (
         <Fade in={true}>
             <Box>
+                {newEventListOpen&&<AddNewEventList setOpen={setNewEventListOpen} />}
                 <Card sx={{ maxWidth: 345 }}>
                     <CardActionArea onClick={()=>console.log()}>
                         <CardMedia
@@ -57,13 +60,15 @@ export default function EventsPage () {
                         </Button>
                     </CardActions>
                 </Card>
-                <Fab 
-                    color="primary" 
-                    sx={{position: 'absolute', bottom: 16, right: 16,}}
-                    onClick={()=>console.log('click')}
-                >
-                    <AddIcon />
-                </Fab>
+                {(user?.role==="Secretary"||user?.role==="Lord")&&
+                    <Fab 
+                        color="primary" 
+                        sx={{position: 'absolute', bottom: 16, right: 16,}}
+                        onClick={()=>setNewEventListOpen(true)}
+                    >
+                        <AddIcon />
+                    </Fab>
+                }
             </Box>
         </Fade>
     )

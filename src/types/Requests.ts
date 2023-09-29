@@ -91,3 +91,17 @@ export interface Event {
     nowGold?: number,
     date: number
 }
+
+export interface Event {
+    pict: string[],
+    text: string,
+    fulltext: string,
+    id?: number, 
+    name: string,
+    gold: number,
+    activeMembers: string[],
+    orginizer: string[],
+    nowGold?: number,
+    date: number,
+    type: string
+}
