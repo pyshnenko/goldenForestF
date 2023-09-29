@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import copy from "fast-copy";
 import Box from "@mui/material/Box";
 import TextField from '@mui/material/TextField';
 import Fade from '@mui/material/Fade';
@@ -12,6 +13,7 @@ import { useAuth } from 'hooks/useAuth';
 import Typography from '@mui/material/Typography';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import Api from 'helpers/Api';
 
 interface ErrorInt {date: boolean, gold: boolean, name: boolean, type: boolean, text: boolean, fullText: boolean}
 
@@ -59,6 +61,12 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                 setTimeout(setSpage, 500, true)
             }
         }
+        if (page) {
+            extData.pict = images;
+            let save = Api.addNewEvent(user, extData);
+            save.then((res)=>console.log(res));
+            save.catch((e)=>console.log(e));
+        }
     }
 
     const attFile = async () => {
@@ -75,14 +83,17 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                 const options = {
                     method: 'POST',
                     headers: {
-                        folder: encodeURI('test'),
-                        fname: encodeURI('test')
+                        folder: encodeURI(files[i].name),
+                        fname: encodeURI(files[i].name)
                     },
                     body: data,
                 }                
                 const response = await fetch('https://gf.spamigor.ru/apiUpload', options);
                 const res = await response.json();
                 console.log(res);
+                let buf = copy(images);
+                buf.push('https://gf.spamigor.ru/'+res.addr);
+                setImages(buf);
             }
         }
         
