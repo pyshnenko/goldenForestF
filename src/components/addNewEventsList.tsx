@@ -80,7 +80,7 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                     },
                     body: data,
                 }                
-                const response = await fetch('https://gf.spamigor.site/apiUpload', options);
+                const response = await fetch('https://gf.spamigor.ru/apiUpload', options);
                 const res = await response.json();
                 console.log(res);
             }
