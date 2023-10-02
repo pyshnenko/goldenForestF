@@ -21,12 +21,11 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
     const [fade, setFade] = useState<boolean>(true);
     const [sPage, setSpage] = useState<boolean>(false);
     const [page, setPage] = useState<boolean>(false);
-    const [images, setImages] = useState<string[]>([]);
+    const [ extData, setExtData ] = useState<Event>();
     const [errors, setError] = useState<ErrorInt>(
         {date: false, gold: false, name: false, type: false, text: false, fullText: false}
     )
     const { user } = useAuth();
-    let extData: Event;
 
     useEffect(()=>{
         if (!fade) setTimeout(setOpen, 500, false);
@@ -54,22 +53,23 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                 if (jbjKeys[keys][1]) {ready = false; break}
             }
             if (ready) {
-                extData = {
+                setExtData({
                     name, date, gold, type, text, fulltext, pict: [], orginizer: [user ? user.login : ''], activeMembers: []
-                }
+                })
                 setPage(true);
                 setTimeout(setSpage, 500, true)
             }
         }
-        if (page) {
-            extData.pict = images;
+        if (page&&extData!==undefined) {
             let save = Api.addNewEvent(user, extData);
             save.then((res)=>console.log(res));
             save.catch((e)=>console.log(e));
+            setOpen(false);
         }
     }
 
     const attFile = async () => {
+        console.log(extData);
         let input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
@@ -83,7 +83,7 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                 const options = {
                     method: 'POST',
                     headers: {
-                        folder: encodeURI(files[i].name),
+                        folder: encodeURI(extData?.name||'noName'),
                         fname: encodeURI(files[i].name)
                     },
                     body: data,
@@ -91,9 +91,11 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                 const response = await fetch('https://gf.spamigor.ru/apiUpload', options);
                 const res = await response.json();
                 console.log(res);
-                let buf = copy(images);
-                buf.push('https://gf.spamigor.ru/'+res.addr);
-                setImages(buf);
+                if(extData!==undefined){
+                    let buf = copy(extData?.pict || []);
+                    buf.push('https://gf.spamigor.ru/'+res.addr);
+                    setExtData({...extData, pict: buf});
+                }
             }
         }
         
@@ -169,8 +171,8 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                     >
                         <Typography>Добавим изображений</Typography>
                         <Box>
-                            {images.length!==0 && <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
-                                {images.map((item, index) => (
+                            {extData!==undefined&&extData.pict.length!==0 && <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+                                {extData.pict.map((item, index) => (
                                     <ImageListItem key={'img '+ index}>
                                     <img
                                         srcSet={item}
