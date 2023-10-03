@@ -13,6 +13,7 @@ import Api from 'helpers/Api';
 import { useAuth } from 'hooks/useAuth';
 import AddNewEventList from 'components/addNewEventsList';
 import { Event } from "../../types/Requests";
+const myHref = 'https://gf.spamigor.ru/events'
 
 export default function EventsPage () {
     const { setVisible } = useLoading();
@@ -48,7 +49,10 @@ export default function EventsPage () {
                 {eventsList.length>0 ? eventsList.map((evnt: Event)=>{
                     return(
                         <Card sx={{ maxWidth: 345, width: '300px', backgroundColor: 'beige', padding: 1 }} key={evnt.id}>
-                        <CardActionArea onClick={()=>console.log()}>
+                        <CardActionArea onClick={()=>{
+                            let uri = myHref + '?' + `id=${evnt.id}&name=${evnt.name}`
+                            console.log(uri)
+                        }}>
                             <CardMedia
                                 component="img"
                                 height="250"
@@ -64,11 +68,6 @@ export default function EventsPage () {
                                 </Typography>
                             </CardContent>
                         </CardActionArea>
-                        <CardActions>
-                            <Button size="small" color="primary">
-                                Открыть
-                            </Button>
-                        </CardActions>
                     </Card>)
                 }): null}
                 {(user?.role==="Secretary"||user?.role==="Lord")&&
