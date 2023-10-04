@@ -14,6 +14,9 @@ import Typography from '@mui/material/Typography';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Api from 'helpers/Api';
+import { useLoading } from 'hooks/useLoading';
+import Loading from './UsersCard';
+import ImgWiever from './pictureWievew';
 
 interface ErrorInt {date: boolean, gold: boolean, name: boolean, type: boolean, text: boolean, fullText: boolean}
 
@@ -22,10 +25,13 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
     const [sPage, setSpage] = useState<boolean>(false);
     const [page, setPage] = useState<boolean>(false);
     const [ extData, setExtData ] = useState<Event>();
+    const [addr, setAddr] = useState<string>('');
     const [errors, setError] = useState<ErrorInt>(
         {date: false, gold: false, name: false, type: false, text: false, fullText: false}
     )
     const { user } = useAuth();
+    
+    const { setVisible } = useLoading();
 
     useEffect(()=>{
         if (!fade) setTimeout(setOpen, 500, false);
@@ -61,8 +67,13 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
             }
         }
         if (page&&extData!==undefined) {
+            setVisible(true);
             let save = Api.addNewEvent(user, extData);
-            save.then((res)=>console.log(res));
+            save.then((res)=>{
+                console.log(res);
+                setVisible(false);
+                window.location.reload();
+            })
             save.catch((e)=>console.log(e));
             setOpen(false);
         }
@@ -70,14 +81,18 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
 
     const attFile = async () => {
         console.log(extData);
+        setVisible(true);
+        let pictBuf: string[] = copy(extData?.pict) || [];
         let input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
         input.multiple = true;
         input.onchange = async (e: any) => {
+            setVisible(true);
             let files = e.target.files;
             console.log(files)
             for (let i = 0; i<files.length; i++) {
+                console.log(files)
                 let data = new FormData();
                 data.append('file', files[i]);
                 const options = {
@@ -92,15 +107,14 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                 const res = await response.json();
                 console.log(res);
                 if(extData!==undefined){
-                    let buf = copy(extData?.pict || []);
-                    buf.push('https://gf.spamigor.ru/'+res.addr);
-                    setExtData({...extData, pict: buf});
+                    pictBuf.push('https://gf.spamigor.ru/'+res.addr);
+                    setExtData({...extData, pict: pictBuf});
                 }
             }
+            setVisible(false);
         }
         
         input.click();
-
     }
 
     return (
@@ -118,6 +132,7 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                     justifyContent: 'center'
                 }}
             >
+                <ImgWiever addr={addr} />
                 <Box sx={{position: 'fixed', backgroundColor: 'white', opacity: '0.85', top: 0, left: 0, width: '100%', height: '100%', zIndex: 9998 }} onClick={()=>setFade(false)} />
                 {!sPage&&<Fade in={!page}>
                     <Box 
@@ -178,6 +193,11 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                                         srcSet={item}
                                         src={item}
                                         loading="lazy"
+                                        style={{maxWidth: '164px', maxHeight: '164px'}}
+                                        onClick={()=>{
+                                            console.log(item);
+                                            setAddr(item)
+                                        }}
                                     />
                                     </ImageListItem>
                                 ))}

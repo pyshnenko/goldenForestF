@@ -40,6 +40,7 @@ export default function App() {
 
   React.useEffect(()=>{
     console.log(user);
+    console.log(window.location);
     setVisible(true);
     const params = new URLSearchParams(window.location.search);
     let done = params.get('name');
@@ -50,6 +51,12 @@ export default function App() {
         setValidAddr(true);
       })
       ver.catch((e)=>console.log(e));
+    }
+    let evnt = params.get('event');
+    let evntId = params.get('evtId');
+    if (evnt&&evntId) {
+      localStorage.setItem('evntId', evntId);
+      //window.location.href = window.location.href;
     }
     const settingString: string | null = localStorage.getItem('gfLocalSettings');
     if (settingString !== '') {
