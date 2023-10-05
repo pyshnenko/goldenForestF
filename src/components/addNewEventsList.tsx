@@ -16,7 +16,7 @@ import ImageListItem from '@mui/material/ImageListItem';
 import Api from 'helpers/Api';
 import { useLoading } from 'hooks/useLoading';
 import Loading from './UsersCard';
-import ImgWiever from './pictureWievew';
+import {ImgWiever} from './pictureWievew';
 
 interface ErrorInt {date: boolean, gold: boolean, name: boolean, type: boolean, text: boolean, fullText: boolean}
 
@@ -132,7 +132,7 @@ export default function AddNewEventList ({setOpen}: {setOpen: (val: boolean)=>vo
                     justifyContent: 'center'
                 }}
             >
-                <ImgWiever addr={addr} />
+                <ImgWiever src={addr} />
                 <Box sx={{position: 'fixed', backgroundColor: 'white', opacity: '0.85', top: 0, left: 0, width: '100%', height: '100%', zIndex: 9998 }} onClick={()=>setFade(false)} />
                 {!sPage&&<Fade in={!page}>
                     <Box 

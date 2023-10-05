@@ -15,7 +15,7 @@ import AddNewEventList from 'components/addNewEventsList';
 import { Event } from "../../types/Requests";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import ImgWiever from '../../components/pictureWievew';
+import {ImgWiever, ImgWieverType} from '../../components/pictureWievew';
 const myHref = 'https://gf.spamigor.ru/events'
 
 export default function EventsPage () {
@@ -24,7 +24,7 @@ export default function EventsPage () {
     const [eventsList, setEventsList] = useState<Event[]>([]);
     const [cardOpen, setCardOpen] = useState<boolean>(true);
     const [mode, setMode] = useState<number>(-1);
-    const [addr, setAddr] = useState<string>('');
+    const [addr, setAddr] = useState<ImgWieverType>({addr: ''});
     const trig = useRef<boolean>(true);  
     const { user } = useAuth();
 
@@ -45,7 +45,7 @@ export default function EventsPage () {
     return (
         <Fade in={true}>
             <Box>
-                <ImgWiever addr={addr} />
+            <ImgWiever props={addr} />
                 {mode===-1?<Box sx={{
                     padding: 2,
                     display: 'flex',
@@ -91,11 +91,18 @@ export default function EventsPage () {
                     }
                 </Box>:
                 <Fade in={mode!==-1}><Box>
-                    {eventsList.length>0&&eventsList.map((item: Event)=>{
+                    {eventsList.length>0&&eventsList.map((item: Event, index: number)=>{
                         return (
                             <Box>
                                 {item.id===mode?<Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                    <Typography>{item.name}</Typography>   
+                                    <Typography>{item.name} ({item.type})</Typography>   
+                                    <Box>              
+                                        <Typography>Дата: {(new Date(Number(item.date))).toLocaleDateString()}</Typography>                          
+                                        <Typography>Автор: {item.orginizer.map((item: string)=>item+' ')}</Typography>
+                                        <Typography>Необходимая сумма на организацию: {item.gold}</Typography>
+                                        <Typography>Собрано на данный момент: {item.nowGold}</Typography>
+                                        <Typography>{item.fulltext}</Typography>
+                                    </Box>
                                     {item.pict.length!==0 && <ImageList cols={Math.floor(window.innerWidth/300)} rowHeight={210}>
                                     {item.pict.map((itemPict, index) => (
                                         <Fade in={true} timeout={index*500}><ImageListItem key={'img '+ index}>
@@ -106,12 +113,15 @@ export default function EventsPage () {
                                             style={{maxWidth: '280px', maxHeight: '210px'}}
                                             onClick={()=>{
                                                 console.log(itemPict);
-                                                setAddr(itemPict)
+                                                setAddr({addrArray: item.pict, startPosition: index})
                                             }}
                                         />
                                         </ImageListItem></Fade>
                                     ))}
-                                </ImageList>}         
+                                </ImageList>} 
+                                <Box>
+                                    <Typography>Участие подтвердили: {item.activeMembers.map((item:string)=>{return `${item}, `})}</Typography>
+                                </Box>        
                                 </Box>:null}
                             </Box>
                         )
