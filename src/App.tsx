@@ -52,12 +52,6 @@ export default function App() {
       })
       ver.catch((e)=>console.log(e));
     }
-    let evnt = params.get('event');
-    let evntId = params.get('evtId');
-    if (evnt&&evntId) {
-      localStorage.setItem('evntId', evntId);
-      //window.location.href = window.location.href;
-    }
     const settingString: string | null = localStorage.getItem('gfLocalSettings');
     if (settingString !== '') {
       const parsedSettingString = JSON.parse(String(settingString));
@@ -87,7 +81,7 @@ export default function App() {
           <Route path="/" element={<Main />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
-          <Route path="/events" element={<Events />} />
+          <Route path="/events/*" element={<Events />} />
           <Route path="/join" 
             element={ <PrivateRoute> <Join userRole = {[Roles.Stranger]}/> </PrivateRoute> }
           />

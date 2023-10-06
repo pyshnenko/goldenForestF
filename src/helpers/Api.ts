@@ -67,7 +67,7 @@ const UpdEvent = (user: NullableUser, evnt: Event) => {
 };
 
 const eventsList = (user: NullableUser, id?: number) => {
-    return privateApi(user?.token || null).post('/events/list', id);
+    return loginApi().post('/events/list', id);
 };
 
 const Api = {

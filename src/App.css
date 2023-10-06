@@ -36,6 +36,6 @@ body {
   font-family: Gotish;
 }*/
 
-#imgHover:hover {
-  zoom: 1.1
+#imgHover:hover {  
+  zoom: 1.3;
 }

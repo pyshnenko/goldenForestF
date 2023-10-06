@@ -259,22 +259,8 @@
         "responses": {
           "200": {
             "description": "Выполнено"
-          },
-          "401": {
-            "description": "Недостаточно прав"
-          },
-          "402": {
-            "description": "Не авторизован"
-          },
-          "403": {
-            "description": "Некорректный токен или данные"
           }
-        },
-        "security": [
-          {
-            "B_auth": []
-          }
-        ]
+        }
       }
     },
     "/goldTreasury/addToTreasury": {

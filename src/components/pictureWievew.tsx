@@ -14,17 +14,21 @@ export function ImgWiever ({props, src}: {props?:ImgWieverType, src?: string}) {
     const trig = useRef<boolean>(true);
     const posCurr = useRef<number>(startPosition);
     const pictCurr = useRef<number>(pict.length);
-
-    
+    const zoomRef = useRef<{zoomI: number, top: number, left: number}>({zoomI: 1, top: 0, left: 0});
+    const [zoom, setZoom] = useState<{zoomI: number, top: number, left: number}>({zoomI: 1, top: 0, left: 0});   
 
     useEffect(()=>{
         if (trig.current) {
             trig.current = false;
             posCurr.current = pos;
 
+            window.addEventListener('mousewheel', (e: any ) => {
+                const newZoom: number = zoomRef.current.zoomI + (e.deltaY/1000);
+                const newTop: number = zoomRef.current.top - (e.deltaY/100*((e.clientY-(e.view.innerHeight/2))/20));
+                const newLeft: number = zoomRef.current.left - (e.deltaY/100*((e.clientX-(e.view.innerWidth/2))/20));
+                setZoom({zoomI: newZoom<0.1?0.1:newZoom>5?5:newZoom, top: newTop, left: newLeft})
+            });
             const onKeyUp = (key: KeyboardEvent) => {
-                console.log(posCurr.current);
-                console.log(key.code);
                 if (key.code==='ArrowLeft') setPos(posCurr.current<=0?0:posCurr.current-1);
                 else if (key.code === 'ArrowRight') setPos(posCurr.current>=pictCurr.current-1?pictCurr.current-1:posCurr.current+1);
                 else if (key.code === 'Escape') setAnim(false);
@@ -50,8 +54,12 @@ export function ImgWiever ({props, src}: {props?:ImgWieverType, src?: string}) {
     }, [])
 
     useEffect(()=>{
-        console.log(posCurr)
+        zoomRef.current = zoom;
+    }, [zoom])
+
+    useEffect(()=>{
         posCurr.current = pos;
+        setZoom({zoomI: 1, left: 0, top: 0});
     }, [pos])
 
     useEffect(()=>{
@@ -73,7 +81,7 @@ export function ImgWiever ({props, src}: {props?:ImgWieverType, src?: string}) {
         }
     }, [props, src])
 
-    const cssforDownBar = {maxHeight: '10vh', maxWidth: '10vw', margin: '0 16px', padding: 8};
+    const cssforDownBar = {maxHeight: '10vh', maxWidth: '10vw', margin: '0 16px', padding: 4, zIndex: 10014};
 
     return (
         <Box>
@@ -83,18 +91,52 @@ export function ImgWiever ({props, src}: {props?:ImgWieverType, src?: string}) {
                         sx={{position: 'fixed', width: '100%', height: '100%', top: 0, left: 0, zIndex: 10011, opacity: 0.85, backgroundColor: 'black'}}
                         onClick={()=>{setAnim(false)}}
                     />
-                    <Box sx={{zIndex: 10012, maxHeight: '90%', maxWidth: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between', height:'100%'}}>
-                        <Box sx={{height: "100%", display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-                            <img srcSet={pict[pos]} src={pict[pos]} style={{maxHeight: pict.length>1?'70vh':'90vh', maxWidth: pict.length>1?'70vw':'90vw'}} />
+                    <Box sx={{zIndex: 10012, maxHeight: '90%', maxWidth: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height:'100%'}}>
+                        <Box sx={{height: "100%", display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '15vh'}}>
+                            <img 
+                                srcSet={pict[pos]} 
+                                src={pict[pos]} 
+                                style={{
+                                    maxHeight: pict.length>1?'70vh':'90vh', 
+                                    maxWidth: pict.length>1?'70vw':'90vw', 
+                                    zoom: zoom.zoomI, 
+                                    position:'relative',
+                                    top: zoom.top,
+                                    left: zoom.left
+                                }} 
+                            />
                         </Box>
-                        {pict.length>1&&<Box sx={{display: 'flex', alignItems: 'center', justifyContent: 'center', margin: 2, height: '12vh'}}>
+                        {pict.length>1&&<Box 
+                            sx={{
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center', 
+                                margin: 2, 
+                                height: '12vh', 
+                                position: 'fixed', 
+                                bottom: 0, 
+                                left: 0, 
+                                width: '100%',
+                            }}
+                        >
+                            <Box sx={{
+                                    backgroundColor: 'black',
+                                    width: '100%',
+                                    height: '15vh',
+                                    position: 'fixed',
+                                    bottom: 0,
+                                    left: 0,
+                                    opacity: 0.8,
+                                    boxShadow: '0 0 20px black',
+                                    zIndex: 10013
+                            }} />
                             {pict.map((src: string, index: number)=>{
                                 return(
                                     <img 
                                         srcSet={src} 
                                         src={src} 
-                                        style={index!==pos?cssforDownBar:{...cssforDownBar, backgroundColor: 'black', boxShadow: '0 0 25px black', borderRadius: '5px'}} 
-                                        key={src} 
+                                        style={index!==pos?cssforDownBar:{...cssforDownBar, backgroundColor: 'darkslategrey', boxShadow: 'darkslategrey 0px 0px 5px 3px', borderRadius: '5px', zoom: 1.4}} 
+                                        key={src}
                                         id='imgHover'
                                         onClick={()=>setPos(index)} 
                                     />

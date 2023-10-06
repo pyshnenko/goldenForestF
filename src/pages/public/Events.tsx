@@ -16,7 +16,6 @@ import { Event } from "../../types/Requests";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import {ImgWiever, ImgWieverType} from '../../components/pictureWievew';
-const myHref = 'https://gf.spamigor.ru/events'
 
 export default function EventsPage () {
     const { setVisible } = useLoading();
@@ -31,11 +30,21 @@ export default function EventsPage () {
     useEffect(()=>{
         if (trig.current) {
             trig.current = false;
+            let oprId = window.location.href.slice(window.location.href.indexOf('events')+7);
+            const id: number = Number(oprId.slice(0, oprId.indexOf('-')));
+            console.log(id);
             setVisible(true);
             const res = Api.eventsList(user);
-            res.then((result)=>{
+            res.then((result: {data: Event[]})=>{
                 console.log(result);
                 setEventsList(result.data);
+                for(let i=0; i<result.data.length; i++) {
+                    console.log(result.data);
+                    if (Number(result.data[i].id)===id) {
+                        setMode(id);
+                        break;
+                    }
+                }
             })
             res.catch((e: any)=>console.log(e))
             res.finally(()=>setVisible(false))
@@ -43,7 +52,7 @@ export default function EventsPage () {
     }, [])
 
     return (
-        <Fade in={true}>
+        <Fade in={true} key={'hello'}>
             <Box>
             <ImgWiever props={addr} />
                 {mode===-1?<Box sx={{
@@ -56,12 +65,12 @@ export default function EventsPage () {
                     {newEventListOpen&&<AddNewEventList setOpen={setNewEventListOpen} />}
                     {eventsList.length>0 ? eventsList.map((evnt: Event, index: number)=>{
                         return(
-                            <Fade in={cardOpen} timeout={index*500}><Card sx={{ maxWidth: 345, width: '300px', backgroundColor: 'beige', padding: 1, margin: 1 }} key={evnt.id}>
+                            <Fade in={cardOpen} timeout={index*500} key={evnt.id}><Card sx={{ maxWidth: 345, width: '300px', backgroundColor: 'beige', padding: 1, margin: 1 }}>
                             <CardActionArea onClick={()=>{
-                                let uri = myHref + '?' + `evntId=${evnt.id}&event=${evnt.name}`
+                                let uri = window.location.href + '/' + `${evnt.id}-${evnt.name}`
                                 console.log(uri);
                                 setCardOpen(false);
-                                setTimeout(setMode, 1000, evnt.id);
+                                setTimeout((addr: string)=>window.location.href=addr, 1000, uri);
                             }}>
                                 <CardMedia
                                     component="img"
@@ -103,14 +112,14 @@ export default function EventsPage () {
                                         <Typography>Собрано на данный момент: {item.nowGold}</Typography>
                                         <Typography>{item.fulltext}</Typography>
                                     </Box>
-                                    {item.pict.length!==0 && <ImageList cols={Math.floor(window.innerWidth/300)} rowHeight={210}>
+                                    {item.pict.length!==0 && <ImageList cols={Math.floor(window.innerWidth/300)} rowHeight={214}>
                                     {item.pict.map((itemPict, index) => (
-                                        <Fade in={true} timeout={index*500}><ImageListItem key={'img '+ index}>
+                                        <Fade in={true} timeout={index*500} key={itemPict}><ImageListItem >
                                         <img
                                             srcSet={itemPict}
                                             src={itemPict}
                                             loading="lazy"
-                                            style={{maxWidth: '280px', maxHeight: '210px'}}
+                                            style={{maxWidth: '280px', maxHeight: '210px', margin: '2px'}}
                                             onClick={()=>{
                                                 console.log(itemPict);
                                                 setAddr({addrArray: item.pict, startPosition: index})
