@@ -67,7 +67,7 @@ export default function EventsPage () {
                         return(
                             <Fade in={cardOpen} timeout={index*500} key={evnt.id}><Card sx={{ maxWidth: 345, width: '300px', backgroundColor: 'beige', padding: 1, margin: 1 }}>
                             <CardActionArea onClick={()=>{
-                                let uri = window.location.href + '/' + `${evnt.id}-${evnt.name}`
+                                let uri = window.location.href + (window.location.href[window.location.href.length-1]==='/'?'':'/') + `${evnt.id}-${evnt.name}`
                                 console.log(uri);
                                 setCardOpen(false);
                                 setTimeout((addr: string)=>window.location.href=addr, 1000, uri);
@@ -76,7 +76,6 @@ export default function EventsPage () {
                                     component="img"
                                     height="250"
                                     image={evnt.pict[0] || ''}
-                                    alt="green iguana"
                                 />
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">
