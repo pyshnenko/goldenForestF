@@ -17,7 +17,7 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import {ImgWiever, ImgWieverType} from '../../components/pictureWievew';
 
-export default function EventsPage () {
+export default function EventsPage ({id}:{id: number}) {
     const { setVisible } = useLoading();
     const [ newEventListOpen, setNewEventListOpen ] = useState<boolean>(false);
     const [eventsList, setEventsList] = useState<Event[]>([]);
@@ -30,16 +30,13 @@ export default function EventsPage () {
     useEffect(()=>{
         if (trig.current) {
             trig.current = false;
-            let oprId = window.location.href.slice(window.location.href.indexOf('events')+7);
-            const id: number = Number(oprId.slice(0, oprId.indexOf('-')));
-            console.log(id);
             setVisible(true);
             const res = Api.eventsList(user);
             res.then((result: {data: Event[]})=>{
                 console.log(result);
+                console.log(id);
                 setEventsList(result.data);
                 for(let i=0; i<result.data.length; i++) {
-                    console.log(result.data);
                     if (Number(result.data[i].id)===id) {
                         setMode(id);
                         break;
@@ -50,6 +47,16 @@ export default function EventsPage () {
             res.finally(()=>setVisible(false))
         }
     }, [])
+
+    useEffect(()=>{
+        console.log(id);
+        for(let i=0; i<eventsList.length; i++) {
+            if (Number(eventsList[i].id)===id) {
+                setMode(id);
+                break;
+            }
+        }
+    }, [id])
 
     return (
         <Fade in={true} key={'hello'}>
@@ -67,7 +74,7 @@ export default function EventsPage () {
                         return(
                             <Fade in={cardOpen} timeout={index*500} key={evnt.id}><Card sx={{ maxWidth: 345, width: '300px', backgroundColor: 'beige', padding: 1, margin: 1 }}>
                             <CardActionArea onClick={()=>{
-                                let uri = window.location.href + (window.location.href[window.location.href.length-1]==='/'?'':'/') + `${evnt.id}-${evnt.name}`
+                                let uri = window.location.href + `?id=${evnt.id}&evName=${evnt.name}`
                                 console.log(uri);
                                 setCardOpen(false);
                                 setTimeout((addr: string)=>window.location.href=addr, 1000, uri);

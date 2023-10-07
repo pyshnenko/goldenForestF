@@ -37,6 +37,7 @@ export default function App() {
   const [ font, setFont ] = React.useState<string>('sans-serif');
   const [validAddr, setValidAddr] = React.useState<boolean>(false);
   const { visible, setVisible } = createVisible();
+  const [idPars, setIdPars] = React.useState<number>(-1);
 
   React.useEffect(()=>{
     console.log(user);
@@ -52,6 +53,9 @@ export default function App() {
       })
       ver.catch((e)=>console.log(e));
     }
+    let iddone = params.get('id')
+    console.log(iddone);
+    if (iddone) setIdPars(Number(iddone));
     const settingString: string | null = localStorage.getItem('gfLocalSettings');
     if (settingString !== '') {
       const parsedSettingString = JSON.parse(String(settingString));
@@ -81,7 +85,7 @@ export default function App() {
           <Route path="/" element={<Main />} />
           <Route path="/register" element={<SignUp />} />
           <Route path="/login" element={<SignIn />} />
-          <Route path="/events/*" element={<Events />} />
+          <Route path="/events/*" element={<Events id={idPars} />} />
           <Route path="/join" 
             element={ <PrivateRoute> <Join userRole = {[Roles.Stranger]}/> </PrivateRoute> }
           />
