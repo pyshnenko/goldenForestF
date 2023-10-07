@@ -22,8 +22,8 @@ const pagesLord: pagesObj[] = [{name: 'Участники', href: '/members'}, {
 const pagesTreasurer: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Казна', href: '/treasury'}, {name: 'Мероприятия', href: '/events'}];
 const pagesSecretary: pagesObj[] = [{name: 'Участники', href: '/members'}, {name: 'Заявки', href: '/joined'}, {name: 'Мероприятия', href: '/events'}, {name: 'Забаненые', href: '/ban'}];
 const pagesPeasant: pagesObj[] = [{name: 'Мероприятия', href: '/events'}];
-const pagesStranger: pagesObj[] = [{name: 'Заявка', href: '/join'}];
-const pagesNotUser: pagesObj[] = [{name: 'Вход', href: '/login'}, {name: 'Регистрация', href: '/register'}];
+const pagesStranger: pagesObj[] = [{name: 'Мероприятия', href: '/events'}, {name: 'Заявка', href: '/join'}];
+const pagesNotUser: pagesObj[] = [{name: 'Мероприятия', href: '/events'}, {name: 'Вход', href: '/login'}, {name: 'Регистрация', href: '/register'}];
 const settingsUsers = ['Профиль', 'Кошелек', 'Настройки', 'Выход'];
 const settingsForCitizen = ['Профиль', 'Выход'];
 
