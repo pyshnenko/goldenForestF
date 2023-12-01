@@ -5,3 +5,4 @@ register
 members
 ban
 events
+treasury
