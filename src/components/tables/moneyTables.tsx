@@ -68,7 +68,7 @@ const headCells: readonly HeadCell[] = [
     }
 ];  
 
-export default function MoneyTable ({variant, setReadyBack, table, index}: {variant: string, setReadyBack: (val: {id: number, data: {var: string, ready: boolean}[]})=>void, table:{id: number, data: {var: string, ready: boolean}[]}, index: number }) {
+export default function MoneyTable ({variant, setReadyBack, table, index, id, tname}: {variant: string, setReadyBack: (val: {id: number, data: {var: string, ready: boolean}[]})=>void, table:{id: number, data: {var: string, ready: boolean}[]}, index: number, id?:number|string, tname?:string }) {
     const [ total, setTotal ] = useState<number>(0);
     const [ ready, setReady ] = useState<{gold: boolean, total: boolean}>({gold: false, total: false});
     const [ filtr, setFiltr ] = useState<{str: string, date: {up: number, down: number}}>({str: '', date: {up: Number(new Date()) + 100000, down: 0}})
@@ -78,7 +78,7 @@ export default function MoneyTable ({variant, setReadyBack, table, index}: {vari
     const [ rows, setRows ] = useState<rowsData[]>([]);
     const [rowsPerPage, setRowsPerPage] = useState(50);
     const [ width, setWidth ] = useState<number>(window.innerWidth);
-    const [ name, setName ] = useState<string>('');
+    const [ name, setName ] = useState<string>(tname||'');
   
     const handleChangePage = (event: unknown, newPage: number) => {
       setPage(newPage);
@@ -112,13 +112,15 @@ export default function MoneyTable ({variant, setReadyBack, table, index}: {vari
         if (trig.current){
             trig.current = false;
             console.log(`${variant} - hello`)
+            console.log(Number(id));
             const res = variant==='gold' ? Api.checkTotalMoney(user) :
             variant === 'treasure' ? Api.checkTotalMoneyTreasure(user) : 
+            variant === 'event' ? Api.checkTotalMoneyTreasure(user, Number(id)) :
             Api.checkTotalMoney(user);
             res.then((result: any)=>{
                 console.log(result.data);
-                setRows(result.data.res.data.history);
-                setTotal(result.data.res.data.total);
+                setRows(result.data.res.data?.history||[]);
+                setTotal(result.data.res.data?.total||1);
             });
             res.finally(()=>{
                 console.log('table.data.length === index' + (table.data.length === index))

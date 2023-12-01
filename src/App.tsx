@@ -80,7 +80,7 @@ export default function App() {
       <TopMenu />
       {validAddr&&<h1>E-mail подтвержден</h1>}
       <Loading visible={visible} />
-      {ready&&<div className="App">
+      {ready&&<div className="App" style={{overflowX: 'hidden'}}>
         <Routes>
           <Route path="/" element={<Main />} />
           <Route path="/register" element={<SignUp />} />

@@ -55,7 +55,8 @@ const addToTreasury = (user: NullableUser, bodyData: addToTreasuryData ) => {
 };
 
 const checkTotalMoneyTreasure = (user: NullableUser, addr: number=0) => {
-    return privateApi(user?.token || null).post('/goldTreasury/total', addr);
+    console.log(addr)
+    return privateApi(user?.token || null).post('/goldTreasury/total', {addr});
 };
 
 const addNewEvent = (user: NullableUser, evnt: Event) => {

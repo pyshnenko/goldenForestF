@@ -91,8 +91,8 @@ export function ImgWiever ({props, src}: {props?:ImgWieverType, src?: string}) {
                         sx={{position: 'fixed', width: '100%', height: '100%', top: 0, left: 0, zIndex: 10011, opacity: 0.85, backgroundColor: 'black'}}
                         onClick={()=>{setAnim(false)}}
                     />
-                    <Box sx={{zIndex: 10012, maxHeight: '90%', maxWidth: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height:'100%'}}>
-                        <Box sx={{height: "100%", display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '15vh'}}>
+                    <Box sx={{zIndex: 10012, maxWidth: '90%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'}}>
+                        <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingBottom: '15vh'}}>
                             <img 
                                 srcSet={pict[pos]} 
                                 src={pict[pos]} 

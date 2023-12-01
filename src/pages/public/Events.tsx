@@ -12,9 +12,8 @@ import { Button, CardActionArea, CardActions, Fab } from '@mui/material';
 import Api from 'helpers/Api';
 import { useAuth } from 'hooks/useAuth';
 import AddNewEventList from 'components/addNewEventsList';
+import ImageFullList from 'components/imageFullList';
 import { Event } from "../../types/Requests";
-import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
 import {ImgWiever, ImgWieverType} from '../../components/pictureWievew';
 
 export default function EventsPage ({id}:{id: number}) {
@@ -98,7 +97,7 @@ export default function EventsPage ({id}:{id: number}) {
                     {(user?.role==="Secretary"||user?.role==="Lord")&&
                         <Fab 
                             color="primary" 
-                            sx={{position: 'absolute', bottom: 16, right: 16,}}
+                            sx={{position: 'fixed', bottom: 16, right: 16,}}
                             onClick={()=>setNewEventListOpen(true)}
                         >
                             <AddIcon />
@@ -108,35 +107,31 @@ export default function EventsPage ({id}:{id: number}) {
                 <Fade in={mode!==-1}><Box>
                     {eventsList.length>0&&eventsList.map((item: Event, index: number)=>{
                         return (
-                            <Box>
+                            <Box key={index}>
                                 {item.id===mode?<Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                                     <Typography>{item.name} ({item.type})</Typography>   
-                                    <Box>              
-                                        <Typography>Дата: {(new Date(Number(item.date))).toLocaleDateString()}</Typography>                          
-                                        <Typography>Автор: {item.orginizer.map((item: string)=>item+' ')}</Typography>
-                                        <Typography>Необходимая сумма на организацию: {item.gold}</Typography>
-                                        <Typography>Собрано на данный момент: {item.nowGold}</Typography>
-                                        <Typography>{item.fulltext}</Typography>
+                                    <Box sx={{
+                                        display: 'flex',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-between',
+                                        alignItems: 'flex-start',
+                                        width: '100%',
+                                        flexWrap: 'wrap'
+                                    }}>   
+                                        <Box>           
+                                            <Typography>Дата: {(new Date(Number(item.date))).toLocaleDateString()}</Typography>                          
+                                            <Typography>Автор: {item.orginizer.map((item: string)=>item+' ')}</Typography>
+                                        </Box>
+                                        <Box>
+                                            <Typography>Необходимая сумма на организацию: {item.gold}</Typography>
+                                            <Typography>Собрано на данный момент: {item.nowGold}</Typography>
+                                        </Box>
                                     </Box>
-                                    {item.pict.length!==0 && <ImageList cols={Math.floor(window.innerWidth/300)} rowHeight={214}>
-                                    {item.pict.map((itemPict, index) => (
-                                        <Fade in={true} timeout={index*500} key={itemPict}><ImageListItem >
-                                        <img
-                                            srcSet={itemPict}
-                                            src={itemPict}
-                                            loading="lazy"
-                                            style={{maxWidth: '280px', maxHeight: '210px', margin: '2px'}}
-                                            onClick={()=>{
-                                                console.log(itemPict);
-                                                setAddr({addrArray: item.pict, startPosition: index})
-                                            }}
-                                        />
-                                        </ImageListItem></Fade>
-                                    ))}
-                                </ImageList>} 
+                                    <Box><Typography>{item.fulltext}</Typography></Box>
                                 <Box>
                                     <Typography>Участие подтвердили: {item.activeMembers.map((item:string)=>{return `${item}, `})}</Typography>
                                 </Box>        
+                                {item.pict.length!==0 && <ImageFullList data={item.pict} setAddr={setAddr} />} 
                                 </Box>:null}
                             </Box>
                         )
