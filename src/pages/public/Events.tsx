@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Box from "@mui/material/Box";
-import Skeleton from '@mui/material/Skeleton';
+import TextField from '@mui/material/TextField';
 import Fade from '@mui/material/Fade';
 import { useLoading } from 'hooks/useLoading';
 import Card from '@mui/material/Card';
@@ -57,6 +57,11 @@ export default function EventsPage ({id}:{id: number}) {
         }
     }, [id])
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        console.log('сщшт')
+        event.preventDefault();
+    }
+
     return (
         <Fade in={true} key={'hello'}>
             <Box>
@@ -109,25 +114,29 @@ export default function EventsPage ({id}:{id: number}) {
                         return (
                             <Box key={index}>
                                 {item.id===mode?<Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                    <Typography>{item.name} ({item.type})</Typography>   
-                                    <Box sx={{
-                                        display: 'flex',
-                                        flexDirection: 'row',
-                                        justifyContent: 'space-between',
-                                        alignItems: 'flex-start',
-                                        width: '100%',
-                                        flexWrap: 'wrap'
-                                    }}>   
-                                        <Box>           
-                                            <Typography>Дата: {(new Date(Number(item.date))).toLocaleDateString()}</Typography>                          
-                                            <Typography>Автор: {item.orginizer.map((item: string)=>item+' ')}</Typography>
-                                        </Box>
-                                        <Box>
-                                            <Typography>Необходимая сумма на организацию: {item.gold}</Typography>
-                                            <Typography>Собрано на данный момент: {item.nowGold}</Typography>
-                                        </Box>
+                                    <Box sx={{paddingLeft: 4, position: 'absolute', left: 0, top: '77px'}}>           
+                                        <Typography>Дата: {(new Date(Number(item.date))).toLocaleDateString()}</Typography>                          
+                                        <Typography>Автор: {item.orginizer.map((item: string)=>item+' ')}</Typography>
                                     </Box>
+                                    <Typography variant="h3" sx={{margin: 4}}>{item.name} ({item.type})</Typography>   
                                     <Box><Typography>{item.fulltext}</Typography></Box>
+                                    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', paddingRight: 4}}>
+                                        <Typography>Необходимая сумма на организацию: {item.gold}</Typography>
+                                        <Typography>Собрано на данный момент: {item.nowGold}</Typography>
+                                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{
+                                            display: 'grid', 
+                                            justifyItems: 'center',
+                                            margin: '8px',
+                                            padding: '16px',
+                                            backgroundColor: 'cornsilk',
+                                            width: '200px',
+                                            borderRadius: '30px',
+                                            boxShadow: '0 0 10px cornflowerblue'
+                                        }}>
+                                            <TextField defaultValue={0} sx={{width: '150px'}} size="small" name="money" type='number' variant="filled" />
+                                            <Button type="submit" variant="contained">Перевести</Button>
+                                        </Box> 
+                                    </Box>
                                 <Box>
                                     <Typography>Участие подтвердили: {item.activeMembers.map((item:string)=>{return `${item}, `})}</Typography>
                                 </Box>        
