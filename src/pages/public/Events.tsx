@@ -114,31 +114,38 @@ export default function EventsPage ({id}:{id: number}) {
                         return (
                             <Box key={index}>
                                 {item.id===mode?<Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                                    <Box sx={{paddingLeft: 4, position: 'absolute', left: 0, top: '77px'}}>           
-                                        <Typography>Дата: {(new Date(Number(item.date))).toLocaleDateString()}</Typography>                          
+                                    <Box sx={{paddingLeft: 4, position: 'absolute', left: 0, top: '77px'}}>                                    
                                         <Typography>Автор: {item.orginizer.map((item: string)=>item+' ')}</Typography>
                                     </Box>
-                                    <Typography variant="h3" sx={{margin: 4}}>{item.name} ({item.type})</Typography>   
-                                    <Box><Typography>{item.fulltext}</Typography></Box>
-                                    <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', paddingRight: 4}}>
-                                        <Typography>Необходимая сумма на организацию: {item.gold}</Typography>
-                                        <Typography>Собрано на данный момент: {item.nowGold}</Typography>
-                                        <Box component="form" noValidate onSubmit={handleSubmit} sx={{
-                                            display: 'grid', 
-                                            justifyItems: 'center',
-                                            margin: '8px',
-                                            padding: '16px',
-                                            backgroundColor: 'cornsilk',
-                                            width: '200px',
-                                            borderRadius: '30px',
-                                            boxShadow: '0 0 10px cornflowerblue'
-                                        }}>
-                                            <TextField defaultValue={0} sx={{width: '150px'}} size="small" name="money" type='number' variant="filled" />
-                                            <Button type="submit" variant="contained">Перевести</Button>
-                                        </Box> 
+                                    <Box sx={{paddingRight: 4, position: 'absolute', right: 0, top: '77px'}}>           
+                                        <Typography>Дата: {(new Date(Number(item.date))).toLocaleDateString()}</Typography>
                                     </Box>
+                                    <Typography variant="h4" sx={{margin: 4, marginTop: 8}}>{item.name} ({item.type})</Typography>
+                                    <Box sx={{display: 'flex', flexDirection: 'row'}}>  
+                                        <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', paddingRight: 4}}>
+                                            <Typography>Нужно: {item.gold}</Typography>
+                                            <Typography>Собрано: {item.nowGold}</Typography>
+                                            <Box component="form" noValidate onSubmit={handleSubmit} sx={{
+                                                display: 'grid', 
+                                                justifyItems: 'center',
+                                                margin: '8px',
+                                                padding: '16px',
+                                                backgroundColor: 'cornsilk',
+                                                width: '200px',
+                                                borderRadius: '30px',
+                                                boxShadow: '0 0 10px cornflowerblue'
+                                            }}>
+                                                <TextField defaultValue={0} sx={{width: '150px'}} size="small" name="money" type='number' variant="filled" />
+                                                <Button type="submit" variant="contained">Перевести</Button>
+                                            </Box> 
+                                        </Box>
+                                        <Box>
+                                            <Typography>Участие подтвердили: {item.activeMembers.map((item:string)=>{return `${item}, `})}</Typography>
+                                            {!item.activeMembers.includes(user?.login||'')&&<Button variant="contained">Буду участвовать!</Button>}
+                                        </Box>
+                                    </Box>
+                                    <Typography>{item.fulltext}</Typography>
                                 <Box>
-                                    <Typography>Участие подтвердили: {item.activeMembers.map((item:string)=>{return `${item}, `})}</Typography>
                                 </Box>        
                                 {item.pict.length!==0 && <ImageFullList data={item.pict} setAddr={setAddr} />} 
                                 </Box>:null}

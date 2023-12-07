@@ -233,6 +233,62 @@
         ]
       }
     },
+    "/events/ilBe": {
+      "post": {
+        "tags": [
+          "Мероприятия"
+        ],
+        "summary": "Согласие/отказ от участия",
+        "operationId": "events_ilBe",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "login": {
+                    "type": "string",
+                    "example": "Spamigor"
+                  },
+                  "example": {
+                    "type": "boolean",
+                    "example": true
+                  },
+                  "id": {
+                    "type": "number",
+                    "example": 5
+                  },
+                  "del": {
+                    "type": "boolean",
+                    "example": false
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Выполнено"
+          },
+          "401": {
+            "description": "Недостаточно прав"
+          },
+          "402": {
+            "description": "Не авторизован"
+          },
+          "403": {
+            "description": "Некорректный токен или данные"
+          }
+        },
+        "security": [
+          {
+            "B_auth": []
+          }
+        ]
+      }
+    },
     "/events/list": {
       "post": {
         "tags": [
